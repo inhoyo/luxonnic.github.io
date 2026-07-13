@@ -3,56 +3,49 @@
 <head>
   <script>document.documentElement.classList.add("js");</script>
   <meta charset="UTF-8" />
-  <title>LUXONNIC – About</title>
+  <title>LUXONNIC — About</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="LUXONNIC's photonic neural processor: three optical primitives composed into a trainable neural network, built by a founding team from Fraunhofer HHI."
+    content="LUXONNIC's photonic neural processor: a programmable photonic neural network built by a founding team from Fraunhofer HHI."
   />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Montserrat:wght@300;400;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
 
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
-  <div class="background">
-    <div class="gradient-strip gradient-1"></div>
-    <div class="gradient-strip gradient-2"></div>
-    <div class="gradient-strip gradient-3"></div>
-  </div>
-
   <nav class="nav">
     <a class="wordmark" href="index.html">LUXONNIC</a>
     <div class="nav-right">
       <a class="nav-link" href="index.html">Home</a>
-      <span class="status-badge">
-        <span class="pulse-dot"></span>
-        <span class="label">Coming Soon</span>
-      </span>
     </div>
   </nav>
 
-  <main class="hero hero-compact">
-    <p class="eyebrow reveal">// Technology</p>
-    <h1 class="headline headline-sm reveal" style="--reveal-delay: 0.08s">
-      Optical machine learning,<br /><em>on a single chip.</em>
-    </h1>
-    <p class="blurb reveal" style="--reveal-delay: 0.16s">
-      A programmable photonic neural network that approximates any
-      nonlinear transformation, computed entirely in the optical domain.
-    </p>
-  </main>
+  <header class="page-hero">
+    <div class="fiber-bg" aria-hidden="true"></div>
+    <div class="hero-content" style="align-items: flex-start">
+      <p class="eyebrow-mono reveal">TECHNOLOGY</p>
+      <h1 class="hero-title reveal" style="--reveal-delay: 0.08s">
+        Optical machine learning,<br />on a single chip.
+      </h1>
+      <p class="subhead reveal" style="--reveal-delay: 0.16s">
+        A programmable photonic neural network that approximates any
+        nonlinear transformation, computed entirely in the optical domain.
+      </p>
+    </div>
+  </header>
 
   <section class="team">
     <div class="team-header reveal">
-      <span class="pillar-label">Founding Team</span>
-      <span class="pillar-num">HHI · Berlin</span>
+      <span class="eyebrow-mono">FOUNDING TEAM</span>
+      <span class="eyebrow-mono">HHI · BERLIN</span>
     </div>
     <div class="team-grid">
       <div class="member reveal">
@@ -81,7 +74,12 @@
     </div>
   </section>
 
+  <footer class="footer-cta">
+    <div class="footer-bar">© 2025 LUXONNIC · Berlin · Fraunhofer Spin-Off</div>
+  </footer>
+
   <script src="assets/background.js"></script>
+  <script src="assets/cursor.js"></script>
   <script src="assets/reveal.js"></script>
 </body>
 </html>

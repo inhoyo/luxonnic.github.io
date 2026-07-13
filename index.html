@@ -3,123 +3,161 @@
 <head>
   <script>document.documentElement.classList.add("js");</script>
   <meta charset="UTF-8" />
-  <title>LUXONNIC – We form intelligence with light</title>
+  <title>LUXONNIC — We form intelligence with light</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="LUXONNIC develops a trainable photonic neural processor that performs signal equalization directly in the optical domain, replacing the power-hungry DSPs inside AI-factory transceivers."
+    content="LUXONNIC is a Berlin-based, Fraunhofer-spun-off deep-tech company building a trainable photonic neural processor that replaces power-hungry DSPs inside AI-factory transceivers."
   />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Montserrat:wght@300;400;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
 
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
-  <div class="background">
-    <div class="gradient-strip gradient-1"></div>
-    <div class="gradient-strip gradient-2"></div>
-    <div class="gradient-strip gradient-3"></div>
-  </div>
-
   <nav class="nav">
     <a class="wordmark" href="index.html">LUXONNIC</a>
     <div class="nav-right">
       <a class="nav-link" href="about.html">About</a>
-      <span class="status-badge">
-        <span class="pulse-dot"></span>
-        <span class="label">Coming Soon</span>
-      </span>
     </div>
   </nav>
 
-  <main class="hero">
-    <p class="eyebrow reveal">// The Company</p>
-    <h1 class="headline reveal" style="--reveal-delay: 0.08s">
-      We form <em>intelligence</em><br />with light.
-    </h1>
-    <p class="blurb reveal" style="--reveal-delay: 0.16s">
-      LUXONNIC develops a trainable photonic neural processor — an
-      integrated circuit that performs signal equalization directly in the
-      optical domain, replacing the power-hungry digital signal processors
-      inside the optical transceivers that connect every GPU in an AI
-      factory.
-    </p>
-  </main>
+  <section id="hero">
+    <div class="fiber-bg" aria-hidden="true"></div>
+    <div class="hero-content">
+      <p class="eyebrow-mono reveal">PHOTONIC NEURAL PROCESSOR · BERLIN</p>
+      <h1 class="hero-title reveal" style="--reveal-delay: 0.08s">
+        We form intelligence<br />with <span class="gradient-word">light</span>.
+      </h1>
+      <p class="subhead reveal" style="--reveal-delay: 0.16s">
+        LUXONNIC replaces power-hungry DSPs inside AI-factory transceivers
+        with a trainable photonic chip. Signal equalization at the speed of
+        light, at under 1 W.
+      </p>
+    </div>
+    <div class="scroll-cue" aria-hidden="true"></div>
+  </section>
 
-  <section class="stats">
-    <div class="stat reveal">
-      <p class="stat-value">10x</p>
-      <p class="stat-label">Efficiency Gain</p>
-    </div>
-    <div class="stat reveal">
-      <p class="stat-value">&lt;1W</p>
-      <p class="stat-label">Power per Module</p>
-    </div>
-    <div class="stat reveal">
-      <p class="stat-value">100GBd</p>
-      <p class="stat-label">Symbol Rate Target</p>
-    </div>
-    <div class="stat reveal">
-      <p class="stat-value">&euro;14B</p>
-      <p class="stat-label">TAM · Transceiver Market</p>
+  <section class="metrics">
+    <div class="metrics-inner">
+      <div class="metric-panel reveal" data-target="10">
+        <div class="metric-readout"><span class="metric-value">0</span></div>
+        <span class="metric-unit">×</span>
+        <span class="metric-label">Efficiency Gain</span>
+      </div>
+      <div class="metric-panel reveal" data-target="1">
+        <div class="metric-readout">
+          &lt;<span class="metric-value">0</span>
+        </div>
+        <span class="metric-unit">W</span>
+        <span class="metric-label">Power per Module</span>
+      </div>
+      <div class="metric-panel reveal" data-target="100">
+        <div class="metric-readout"><span class="metric-value">0</span></div>
+        <span class="metric-unit">GBd</span>
+        <span class="metric-label">Symbol Rate</span>
+      </div>
+      <div class="metric-panel reveal" data-target="14">
+        <div class="metric-readout">
+          &euro;<span class="metric-value">0</span>
+        </div>
+        <span class="metric-unit">B</span>
+        <span class="metric-label">TAM</span>
+      </div>
     </div>
   </section>
 
-  <section class="scene" id="problem">
-    <div class="scene-inner">
-      <div class="pillar-tag reveal">
-        <span class="pillar-label">The Problem</span>
-        <span class="pillar-num">01 / 03</span>
-      </div>
-      <h2 class="scene-title reveal" style="--reveal-delay: 0.08s">
+  <section class="split-section">
+    <div class="text-col">
+      <span class="eyebrow-mono reveal">WHY NOW</span>
+      <h2 class="display-h2 reveal" style="--reveal-delay: 0.08s">
         AI factories are hitting a power wall.
       </h2>
-      <p class="scene-desc reveal" style="--reveal-delay: 0.16s">
-        Transceivers already burn up to 40 MW per AI factory — and DSP
-        power keeps rising with bandwidth.
+      <p class="section-body reveal" style="--reveal-delay: 0.16s">
+        Every GPU cluster in an AI factory is connected by optical
+        transceivers. Those transceivers already consume up to 40 MW per
+        facility — and the DSPs inside them scale their hunger with every
+        bandwidth upgrade. The industry cannot keep building this way.
       </p>
+    </div>
+    <div class="diagram-wrap reveal" style="--reveal-delay: 0.1s">
+      <svg class="diagram" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+        <rect class="diagram-static draw-path" x="14" y="40" width="54" height="120" rx="4" />
+        <path class="diagram-static draw-path" d="M22 58h38M22 78h38M22 98h38M22 118h38M22 138h38" />
+        <text class="diagram-label" x="41" y="176" text-anchor="middle">RACK</text>
+
+        <path class="diagram-static draw-path" d="M68 100h40" />
+
+        <rect class="diagram-static draw-path" x="112" y="80" width="40" height="40" rx="3" />
+        <circle class="diagram-dot" cx="132" cy="100" r="3" />
+        <text class="diagram-label" x="132" y="136" text-anchor="middle">XCVR</text>
+
+        <path class="diagram-static draw-path" d="M152 100h38" />
+
+        <rect class="diagram-static draw-path" x="194" y="64" width="100" height="72" rx="3" />
+        <path class="diagram-static draw-path" d="M208 118l12-28 12 20 12-32 12 24 12-16 12 10" />
+        <text class="diagram-label" x="244" y="150" text-anchor="middle">DSP · 20W</text>
+
+        <path class="diagram-static draw-path" d="M298 92 L318 72" stroke-linecap="round" />
+        <path class="diagram-static draw-path" d="M304 72 L318 72 L318 86" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
     </div>
   </section>
 
-  <section class="scene" id="solution">
-    <div class="scene-inner">
-      <div class="pillar-tag reveal">
-        <span class="pillar-label">The Solution</span>
-        <span class="pillar-num">02 / 03</span>
-      </div>
-      <h2 class="scene-title reveal" style="--reveal-delay: 0.08s">
-        A neural network — built from light itself.
+  <section class="split-section">
+    <div class="text-col">
+      <span class="eyebrow-mono reveal">HOW IT WORKS</span>
+      <h2 class="display-h2 reveal" style="--reveal-delay: 0.08s">
+        A neural network built from light itself.
       </h2>
-      <p class="scene-desc reveal" style="--reveal-delay: 0.16s">
-        A photonic chip that restores DSP-grade equalization at under 1 W,
-        trained in-situ.
+      <p class="section-body reveal" style="--reveal-delay: 0.16s">
+        Our photonic integrated circuit performs signal equalization in the
+        optical domain — no analog-to-digital conversion, no digital
+        computation. Trained in-situ, reconfigurable, and WDM-native.
+        DSP-grade performance at under 1 W.
       </p>
+    </div>
+    <div class="diagram-wrap reveal" style="--reveal-delay: 0.1s">
+      <svg class="diagram" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
+        <path class="diagram-static draw-path" d="M10 100 L22 70 L34 130 L46 80 L58 120 L70 90 L82 110 L94 100" />
+        <text class="diagram-label" x="52" y="150" text-anchor="middle">NOISY IN</text>
+
+        <path class="diagram-static draw-path" d="M100 100h20" />
+
+        <path class="diagram-static draw-path" d="M140 65L205 65M140 65L125 135M140 65L195 135M205 65L125 135M205 65L195 135M125 135L195 135M205 65L222 100M195 135L222 100" />
+        <circle class="diagram-dot" cx="140" cy="65" r="3" />
+        <circle class="diagram-dot" cx="205" cy="65" r="3" />
+        <circle class="diagram-dot" cx="125" cy="135" r="3" />
+        <circle class="diagram-dot" cx="195" cy="135" r="3" />
+        <circle class="diagram-dot" cx="222" cy="100" r="3" />
+        <text class="diagram-label" x="172" y="160" text-anchor="middle">PHOTONIC PNP</text>
+
+        <path class="diagram-static draw-path" d="M222 100h20" />
+
+        <path class="diagram-static draw-path" d="M252 100 C262 82 272 82 282 100 C292 118 302 118 312 100 C317 91 322 91 327 100" />
+        <text class="diagram-label" x="289" y="150" text-anchor="middle">CLEAN OUT</text>
+      </svg>
     </div>
   </section>
 
-  <section class="scene" id="edge">
-    <div class="scene-inner">
-      <div class="pillar-tag reveal">
-        <span class="pillar-label">The Edge</span>
-        <span class="pillar-num">03 / 03</span>
-      </div>
-      <h2 class="scene-title reveal" style="--reveal-delay: 0.08s">
-        Anywhere DSP is a bottleneck.
-      </h2>
-      <p class="scene-desc reveal" style="--reveal-delay: 0.16s">
-        Reconfigurable, dual-mode, and WDM-native — complementary to CPO,
-        not competing with it.
-      </p>
-    </div>
+  <section class="edge">
+    <h2 class="display-h2 reveal">Designed for where DSP is the bottleneck.</h2>
   </section>
+
+  <footer class="footer-cta">
+    <h2 class="footer-title reveal">Light moves faster<br />than electricity.</h2>
+    <div class="footer-bar">© 2025 LUXONNIC · Berlin · Fraunhofer Spin-Off</div>
+  </footer>
 
   <script src="assets/background.js"></script>
+  <script src="assets/cursor.js"></script>
+  <script src="assets/metrics.js"></script>
   <script src="assets/reveal.js"></script>
 </body>
 </html>
