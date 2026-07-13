@@ -392,6 +392,24 @@ a {
   line-height: 1.7;
 }
 
+.footer-cta-link {
+  margin-top: 2.25rem;
+  display: inline-block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--photon);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.footer-cta-link:hover {
+  border-color: var(--photon);
+}
+
 .footer-bar {
   margin-top: 5rem;
   padding-top: 1.5rem;
@@ -488,6 +506,16 @@ a {
 .page-hero .subhead {
   margin-left: 0;
   text-align: left;
+}
+
+.origin {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 2.5rem 5rem;
+}
+
+.origin .section-body {
+  max-width: 640px;
 }
 
 .team {
