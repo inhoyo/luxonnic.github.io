@@ -401,6 +401,47 @@ a {
   color: var(--ghost);
 }
 
+.footer-bar a {
+  color: var(--ghost);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-bar a:hover {
+  color: var(--photon);
+}
+
+/* ==== Impressum ==== */
+
+.legal {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 7rem 1.5rem 6rem;
+  text-align: left;
+}
+
+.legal-title {
+  margin-top: 0.75rem;
+}
+
+.legal-rule {
+  margin: 2rem 0;
+  height: 1px;
+  background: var(--iris);
+  opacity: 0.6;
+}
+
+.legal-body p {
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.legal-body p + p {
+  margin-top: 1.5rem;
+}
+
 /* ==== About page: intro + team ==== */
 
 .page-hero {
