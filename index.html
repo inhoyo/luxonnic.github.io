@@ -1,286 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>document.documentElement.classList.add("js");</script>
   <meta charset="UTF-8" />
-  <title>LUXONNIC – Coming Soon</title>
+  <title>LUXONNIC – We form intelligence with light</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="LUXONNIC – Becoming the secret sauce of Next-Gen transceivers. Coming soon."
+    content="LUXONNIC develops a trainable photonic neural processor that performs signal equalization directly in the optical domain, replacing the power-hungry DSPs inside AI-factory transceivers."
   />
 
-  <!-- Google Font -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Montserrat:wght@300;400;600;700&display=swap"
     rel="stylesheet"
   />
 
-  <style>
-    :root {
-      --bg-main: #020008;
-      --text-main: #ffffff;
-      --accent-purple: #ff00ff;
-      --accent-blue: #00b9ff;
-      --accent-cyan: #00ffe9;
-    }
-
-    * {
-
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html,
-    body {
-      height: 100%;
-    }
-
-    body {
-      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
-      background:
-        radial-gradient(ellipse at top, #1b0036 0, #050008 40%, #000000 100%);
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      min-height: 100vh;
-      padding: 1.5rem;
-      overflow-x: hidden; /* allow vertical scroll, prevent horizontal jiggle */
-    }
-
-    /* ==== Background neon bands ==== */
-
-    .background {
-      position: fixed;
-      inset: 0;
-      overflow: hidden;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    .gradient-strip {
-      position: absolute;
-      width: 170%;
-      height: 32%;
-      left: -25%;
-      filter: saturate(1) contrast(1);
-      opacity: 0.4;
-      transform-origin: left center;
-      animation: slideGradient 18s ease-in-out infinite alternate;
-      box-shadow: 0 0 60px rgba(0, 0, 0, 0.95);
-    }
-
-    .gradient-1 {
-      top: 58%;
-      background: linear-gradient(
-        120deg,
-        #ff5af2 0%,
-        #ff00cc 35%,
-        #c100ff 70%,
-        #7837ff 100%
-      );
-      transform: rotate(-20deg);
-      opacity: 0.45;
-    }
-
-    .gradient-2 {
-      top: 66%;
-      background: linear-gradient(
-        120deg,
-        #4a5dff 0%,
-        #00b5ff 40%,
-        #00e1ff 75%,
-        #00ffe9 100%
-      );
-      transform: rotate(-20deg);
-      opacity: 0.65;
-    }
-
-    .gradient-3 {
-      top: 74%;
-      background: linear-gradient(
-        120deg,
-        #7e2bff 0%,
-        #ff00f2 30%,
-        #00b9ff 65%,
-        #00ffe4 100%
-      );
-      transform: rotate(-20deg);
-      opacity: 0.85;
-    }
-
-    @keyframes slideGradient {
-      0% {
-        transform: translateX(-4%) rotate(-20deg);
-      }
-      50% {
-        transform: translateX(3%) rotate(-20deg);
-      }
-      100% {
-        transform: translateX(-4%) rotate(-20deg);
-      }
-    }
-
-    /* ==== Main layout ==== */
-
-    .hero {
-      position: relative;
-      padding: 2rem 1.5rem;
-      max-width: 960px;
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    .logo-frame {
-      /* outer glass frame */
-      display: inline-flex;
-      padding: 6px;
-      border-radius: 25px;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-
-    .logo-pill {
-      /* inner glassy pill */
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.9rem 3.4rem;
-      border-radius: 25px;
-      background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.12),
-        rgba(0, 0, 0, 0.12)
-      );
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      overflow: hidden;
-    }
-
-    .logo-text {
-      /* fluid scaling: 8vw between a 320px-phone floor and a large-desktop cap */
-      font-size: clamp(1.3rem, 8vw, 6.8rem);
-      letter-spacing: 0.22em;
-      font-weight: 700;
-      color: #ffffff;
-      text-transform: uppercase;
-      text-shadow:
-        0 0 18px rgba(0, 0, 0, 0.9),
-        0 0 12px rgba(255, 255, 255, 0.45);
-      padding-left: 0.22em; /* visually center with letter-spacing */
-      white-space: nowrap;
-    }
-
-    .tagline {
-      margin-top: 1.7rem;
-      font-size: clamp(1rem, 2.1vw, 1.4rem);
-      font-weight: 300;
-      color: #cfeaff;
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
-      line-height: 1.4;
-    }
-
-    .coming-soon {
-      margin-top: 0.6rem;
-      font-size: clamp(0.78rem, 1.6vw, 0.95rem);
-      font-weight: 400;
-      color: #f4f7ff;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
-      line-height: 1.4;
-    }
-
-    /* ==== Responsive tweaks ==== */
-
-    @media (max-width: 900px) {
-      body {
-        padding: 1.25rem;
-      }
-
-      .hero {
-        padding: 1.8rem 1.2rem;
-        max-width: 640px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      body {
-        align-items: flex-start; /* avoid hard vertical centering on short viewports */
-      }
-
-      .hero {
-        margin-top: 16vh;        /* move logo down a bit on phones */
-        padding: 0 0.4rem;
-      }
-
-      .logo-frame {
-        padding: 4px;
-        border-radius: 20px;
-      }
-
-      .logo-pill {
-        padding: 0.65rem 1.9rem;
-        border-radius: 20px;
-      }
-
-      .logo-text {
-        letter-spacing: 0.18em;
-      }
-
-      .tagline {
-        margin-top: 1.4rem;
-      }
-
-      .coming-soon {
-        letter-spacing: 0.18em;
-      }
-
-      /* soften and lower bands so they don’t dominate on small screens */
-      .gradient-strip {
-        height: 38%;
-        opacity: 0.35;
-      }
-
-      .gradient-1 {
-        top: 62%;
-      }
-
-      .gradient-2 {
-        top: 74%;
-      }
-
-      .gradient-3 {
-        top: 86%;
-      }
-    }
-
-    @media (max-width: 400px) {
-      .hero {
-        margin-top: 14vh;
-      }
-
-      .logo-pill {
-        padding: 0.6rem 1.5rem;
-      }
-
-      .coming-soon {
-        font-size: 0.75rem;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .gradient-strip {
-        animation: none;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
   <div class="background">
@@ -289,20 +27,99 @@
     <div class="gradient-strip gradient-3"></div>
   </div>
 
-  <main class="hero">
-    <div class="logo-frame">
-      <div class="logo-pill">
-        <span class="logo-text">LUXONNIC</span>
-      </div>
+  <nav class="nav">
+    <a class="wordmark" href="index.html">LUXONNIC</a>
+    <div class="nav-right">
+      <a class="nav-link" href="about.html">About</a>
+      <span class="status-badge">
+        <span class="pulse-dot"></span>
+        <span class="label">Coming Soon</span>
+      </span>
     </div>
+  </nav>
 
-    <p class="tagline">
-      Becoming the secret sauce of Next-Gen transceivers
-    </p>
-
-    <p class="coming-soon">
-      • Coming Soon •
+  <main class="hero">
+    <p class="eyebrow reveal">// The Company</p>
+    <h1 class="headline reveal" style="--reveal-delay: 0.08s">
+      We form <em>intelligence</em><br />with light.
+    </h1>
+    <p class="blurb reveal" style="--reveal-delay: 0.16s">
+      LUXONNIC develops a trainable photonic neural processor — an
+      integrated circuit that performs signal equalization directly in the
+      optical domain, replacing the power-hungry digital signal processors
+      inside the optical transceivers that connect every GPU in an AI
+      factory.
     </p>
   </main>
+
+  <section class="stats">
+    <div class="stat reveal">
+      <p class="stat-value">10x</p>
+      <p class="stat-label">Efficiency Gain</p>
+    </div>
+    <div class="stat reveal">
+      <p class="stat-value">&lt;1W</p>
+      <p class="stat-label">Power per Module</p>
+    </div>
+    <div class="stat reveal">
+      <p class="stat-value">100GBd</p>
+      <p class="stat-label">Symbol Rate Target</p>
+    </div>
+    <div class="stat reveal">
+      <p class="stat-value">&euro;14B</p>
+      <p class="stat-label">TAM · Transceiver Market</p>
+    </div>
+  </section>
+
+  <section class="scene" id="problem">
+    <div class="scene-inner">
+      <div class="pillar-tag reveal">
+        <span class="pillar-label">The Problem</span>
+        <span class="pillar-num">01 / 03</span>
+      </div>
+      <h2 class="scene-title reveal" style="--reveal-delay: 0.08s">
+        AI factories are hitting a power wall.
+      </h2>
+      <p class="scene-desc reveal" style="--reveal-delay: 0.16s">
+        Transceivers already burn up to 40 MW per AI factory — and DSP
+        power keeps rising with bandwidth.
+      </p>
+    </div>
+  </section>
+
+  <section class="scene" id="solution">
+    <div class="scene-inner">
+      <div class="pillar-tag reveal">
+        <span class="pillar-label">The Solution</span>
+        <span class="pillar-num">02 / 03</span>
+      </div>
+      <h2 class="scene-title reveal" style="--reveal-delay: 0.08s">
+        A neural network — built from light itself.
+      </h2>
+      <p class="scene-desc reveal" style="--reveal-delay: 0.16s">
+        A photonic chip that restores DSP-grade equalization at under 1 W,
+        trained in-situ.
+      </p>
+    </div>
+  </section>
+
+  <section class="scene" id="edge">
+    <div class="scene-inner">
+      <div class="pillar-tag reveal">
+        <span class="pillar-label">The Edge</span>
+        <span class="pillar-num">03 / 03</span>
+      </div>
+      <h2 class="scene-title reveal" style="--reveal-delay: 0.08s">
+        Anywhere DSP is a bottleneck.
+      </h2>
+      <p class="scene-desc reveal" style="--reveal-delay: 0.16s">
+        Reconfigurable, dual-mode, and WDM-native — complementary to CPO,
+        not competing with it.
+      </p>
+    </div>
+  </section>
+
+  <script src="assets/background.js"></script>
+  <script src="assets/reveal.js"></script>
 </body>
 </html>
