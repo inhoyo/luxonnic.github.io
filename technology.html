@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>document.documentElement.classList.add("js");</script>
+  <meta charset="UTF-8" />
+  <title>The Technology — LUXONNIC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="How LUXONNIC's photonic neural processor replaces DSPs inside AI-factory transceivers — the physics, architecture, and integration story."
+  />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="assets/style.css" />
+  <style>
+    /* ---- Technology page: story layout ---- */
+
+    .tech-hero {
+      position: relative;
+      padding: 9rem 2.5rem 6rem;
+      max-width: 900px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .tech-hero-eyebrow {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ghost);
+      margin-bottom: 1.75rem;
+      display: block;
+    }
+
+    .tech-hero-title {
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.6rem, 7vw, 4.4rem);
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      max-width: 720px;
+    }
+
+    .tech-hero-sub {
+      margin-top: 2rem;
+      max-width: 560px;
+      font-family: "Inter", sans-serif;
+      font-size: clamp(1rem, 1.6vw, 1.12rem);
+      line-height: 1.75;
+      color: var(--ink);
+      opacity: 0.75;
+    }
+
+    /* ---- Specs grid ---- */
+    .specs-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2.5rem 7rem;
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 2.5rem 2rem;
+      margin-top: 2.5rem;
+    }
+
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .spec-big {
+      font-family: "JetBrains Mono", monospace;
+      font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+      font-weight: 600;
+      color: var(--photon);
+      line-height: 1;
+    }
+
+    .spec-desc {
+      font-family: "Inter", sans-serif;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      color: var(--ink);
+      opacity: 0.60;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .tech-hero {
+        padding: 7rem 1.25rem 4rem;
+      }
+
+      .specs-section {
+        padding: 4rem 1.25rem 5rem;
+      }
+    }
+
+    /* ════════ Scroll scene — Chapter 01 ════════ */
+
+    .scene-wrapper {
+      position: relative;
+      height: 500vh;
+    }
+
+    .scene-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--void);
+    }
+
+    #dc-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Gradient fade at bottom for text legibility */
+    .scene-overlay-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(9, 9, 15, 0.92) 0%,
+        rgba(9, 9, 15, 0.50) 30%,
+        rgba(9, 9, 15, 0) 60%
+      );
+      pointer-events: none;
+    }
+
+    /* Text panels — stacked at bottom-left, one visible at a time */
+    .scene-panel-text {
+      position: absolute;
+      bottom: 3rem;
+      left: 3rem;
+      max-width: 520px;
+      opacity: 0;
+      transform: scale(0.82);
+      transform-origin: bottom left;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+
+    /* JS drives opacity + transform inline; .is-active just flags active panel */
+    .scene-panel-text.is-active {
+      /* intentionally empty — JS sets styles */
+    }
+
+    .scene-panel-eyebrow {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--photon);
+      opacity: 0.6;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .scene-panel-heading {
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.1rem, 4vw, 3.1rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+
+    .scene-panel-body {
+      font-family: "Inter", sans-serif;
+      font-size: 1rem;
+      line-height: 1.72;
+      color: var(--ink);
+      opacity: 0.82;
+    }
+
+    /* Progress dots — right edge */
+    .scene-progress {
+      position: absolute;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      pointer-events: none;
+    }
+
+    .scene-progress-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(74, 74, 94, 0.5);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .scene-progress-dot.is-active {
+      background: var(--photon);
+      transform: scale(1.55);
+    }
+
+    /* Scroll hint — bottom-centre */
+    .scene-scroll-hint {
+      position: absolute;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ghost);
+      opacity: 0.55;
+      pointer-events: none;
+      animation: hintBob 2.2s ease-in-out infinite;
+      transition: opacity 0.4s ease;
+    }
+
+    .scene-scroll-hint.is-hidden {
+      opacity: 0;
+    }
+
+    @keyframes hintBob {
+      0%, 100% { opacity: 0.35; transform: translateX(-50%) translateY(0);   }
+      50%       { opacity: 0.65; transform: translateX(-50%) translateY(5px); }
+    }
+
+    @media (max-width: 700px) {
+      .scene-wrapper       { height: 440vh; }
+      .scene-panel-text    { left: 1.25rem; bottom: 2rem; max-width: 88vw; }
+      .scene-progress      { right: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a class="wordmark" href="index.html">LUXONNIC</a>
+    <div class="nav-right">
+      <a class="nav-link" href="technology.html">Technology</a>
+      <a class="nav-link" href="about.html">About</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="tech-hero">
+    <span class="tech-hero-eyebrow reveal">The Technology</span>
+    <h1 class="tech-hero-title reveal" style="--reveal-delay: 0.06s">
+      How photonics replaces<br />computation.
+    </h1>
+    <p class="tech-hero-sub reveal" style="--reveal-delay: 0.14s">
+      A step-by-step account of why digital signal processing is the wrong
+      tool for optical communications — and what we built instead.
+    </p>
+  </header>
+
+  <!-- ── Chapter 01: Scroll scene ─────────────────────────── -->
+  <section id="scene-gpu" class="scene-wrapper" aria-label="Chapter 01 — The Bottleneck">
+    <div class="scene-sticky">
+      <canvas id="dc-canvas" aria-hidden="true"></canvas>
+      <div class="scene-overlay-gradient" aria-hidden="true"></div>
+
+      <!-- Panel 0: electrons -->
+      <div class="scene-panel-text is-active" data-panel="0">
+        <span class="scene-panel-eyebrow">01 — The Bottleneck</span>
+        <h2 class="scene-panel-heading">AI factories<br>compute with electrons.</h2>
+        <p class="scene-panel-body">GPUs crunch every matrix multiply electrically — electrons racing through silicon at up to 1,000 W per chip.</p>
+      </div>
+
+      <!-- Panel 1: expansion -->
+      <div class="scene-panel-text" data-panel="1">
+        <span class="scene-panel-eyebrow">01 — The Bottleneck</span>
+        <h2 class="scene-panel-heading">Thousands of GPUs.<br>All linked.</h2>
+        <p class="scene-panel-body">A 100,000-GPU AI cluster is a dense network — every node must reach every other at hundreds of gigabits per second.</p>
+      </div>
+
+      <!-- Panel 2: photon conversion -->
+      <div class="scene-panel-text" data-panel="2">
+        <span class="scene-panel-eyebrow">01 — The Bottleneck</span>
+        <h2 class="scene-panel-heading">Every link converts<br>electrons ↔ photons.</h2>
+        <p class="scene-panel-body">Fiber optics span the datacenter — but electrons must convert to photons to enter the fiber, then back to electrons at the far end.</p>
+      </div>
+
+      <!-- Panel 3: distortion -->
+      <div class="scene-panel-text" data-panel="3">
+        <span class="scene-panel-eyebrow">01 — The Bottleneck</span>
+        <h2 class="scene-panel-heading">The fiber distorts<br>the light.</h2>
+        <p class="scene-panel-body">Chromatic dispersion stretches the optical pulse as it travels — different wavelengths arrive at different times. The signal is a mess.</p>
+      </div>
+
+      <!-- Panel 4: DSP zoom -->
+      <div class="scene-panel-text" data-panel="4">
+        <span class="scene-panel-eyebrow">01 — The Bottleneck</span>
+        <h2 class="scene-panel-heading">The DSP has to<br>equalize all of this.</h2>
+        <p class="scene-panel-body">Every transceiver contains a DSP that reconstructs the signal from the optical chaos. That digital processing burns 20 W — per link.</p>
+      </div>
+
+      <!-- Right-side progress dots -->
+      <div class="scene-progress" aria-hidden="true">
+        <div class="scene-progress-dot is-active" data-step="0"></div>
+        <div class="scene-progress-dot" data-step="1"></div>
+        <div class="scene-progress-dot" data-step="2"></div>
+        <div class="scene-progress-dot" data-step="3"></div>
+        <div class="scene-progress-dot" data-step="4"></div>
+      </div>
+
+      <div class="scene-scroll-hint" id="scene-hint" aria-hidden="true">scroll</div>
+    </div>
+  </section>
+
+  <!-- Specs -->
+  <section class="specs-section">
+    <span class="eyebrow-mono reveal">THE NUMBERS</span>
+    <div class="specs-grid">
+      <div class="spec-item reveal">
+        <span class="spec-big">10×</span>
+        <span class="spec-desc">less power than DSP</span>
+      </div>
+      <div class="spec-item reveal" style="--reveal-delay: 0.05s">
+        <span class="spec-big">&lt;1 W</span>
+        <span class="spec-desc">per transceiver module</span>
+      </div>
+      <div class="spec-item reveal" style="--reveal-delay: 0.10s">
+        <span class="spec-big">100 GBd</span>
+        <span class="spec-desc">symbol rate per channel</span>
+      </div>
+      <div class="spec-item reveal" style="--reveal-delay: 0.15s">
+        <span class="spec-big">WDM</span>
+        <span class="spec-desc">all wavelengths at once, no per-channel cost</span>
+      </div>
+      <div class="spec-item reveal" style="--reveal-delay: 0.20s">
+        <span class="spec-big">400G–1.6T</span>
+        <span class="spec-desc">compatible form factors</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer-cta">
+    <h2 class="footer-title reveal">Light moves faster<br />than electricity.</h2>
+    <a
+      class="footer-cta-link reveal"
+      style="--reveal-delay: 0.1s"
+      href="mailto:in-ho.baek@hhi.fraunhofer.de"
+      >Get in Touch</a
+    >
+
+    <div class="affiliation reveal">
+      <span class="affiliation-label">Part of the</span>
+      <a
+        class="affiliation-link"
+        href="https://www.xg-incubator.com"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          class="affiliation-logo"
+          src="assets/xg-incubator-logo.webp"
+          alt="xG Incubator"
+          width="152"
+          height="22"
+        />
+      </a>
+    </div>
+
+    <div class="footer-bar">
+      © 2026 LUXONNIC · Berlin · Fraunhofer Spin-Off ·
+      <a href="impressum.html">Impressum</a>
+    </div>
+  </footer>
+
+  <script src="assets/cursor.js"></script>
+  <script src="assets/reveal.js"></script>
+  <script src="assets/datacenter-anim.js"></script>
+</body>
+</html>
