@@ -50,7 +50,8 @@
     TW = (w * 0.82) / 5.5;
     TH = TW * 0.36;
     OX = w / 2 - TW / 4;
-    OY = h * 0.82;
+    // Portrait mobile: raise grid so chips sit above the bottom gradient zone
+    OY = h * (w < h ? 0.62 : 0.82);
   }
 
   function gxy(c, r) {
@@ -316,7 +317,12 @@
 
     ctx.font = `500 ${fss}px "JetBrains Mono", monospace`;
     ctx.fillStyle = "rgba(200,245,255,0.42)";
-    ctx.fillText("different wavelengths arrive at different times", cx, oy + fss * 2.1);
+    if (w < 520) {
+      ctx.fillText("wavelengths arrive",      cx, oy + fss * 2.1);
+      ctx.fillText("at different times", cx, oy + fss * 3.5);
+    } else {
+      ctx.fillText("different wavelengths arrive at different times", cx, oy + fss * 2.1);
+    }
 
     ctx.textAlign   = "left";
     ctx.globalAlpha = 1;
@@ -328,6 +334,120 @@
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 
     const w = cssW(), h = cssH();
+    const speed = 0.0007;
+
+    /* ── PORTRAIT / MOBILE: vertical stack ── */
+    if (w < h * 0.8) {
+      const chipS  = Math.min(w * 0.22, h * 0.13, 110);
+      const hs     = chipS / 2;
+      const pW     = w * 0.72;
+      const pHalf  = Math.min(h * 0.115, 75);
+      const vGap   = chipS * 0.42;
+      const cx     = w / 2;
+
+      const totalH = pHalf * 2 + vGap + chipS + vGap + pHalf * 2;
+      const topCY  = h * 0.5 - totalH * 0.5 + pHalf;
+      const chipCY = topCY + pHalf + vGap + hs;
+      const botCY  = chipCY + hs + vGap + pHalf;
+
+      const fsLabel = Math.max(8, Math.min(w * 0.026, 11));
+      const fsPow   = Math.max(11, chipS * 0.38);
+      const ah      = chipS * 0.065;
+
+      ctx.globalAlpha = da;
+
+      // Top: distorted signal (3 chromatic waves)
+      const dW = [
+        { color: "#ff8844", yOff: -pHalf * 0.25, phase:  0.9, amp: 0.28, freq: 8.5 },
+        { color: "#ffffff", yOff:  0,             phase:  0.0, amp: 0.38, freq: 7.0 },
+        { color: "#6688ff", yOff: +pHalf * 0.25, phase: -0.9, amp: 0.28, freq: 9.2 },
+      ];
+      for (const dw of dW) {
+        ctx.globalAlpha = da * (dw.yOff === 0 ? 0.88 : 0.60);
+        ctx.strokeStyle = dw.color;
+        ctx.lineWidth   = Math.max(1, chipS * 0.014);
+        ctx.shadowColor = dw.color; ctx.shadowBlur = 4;
+        ctx.beginPath();
+        for (let i = 0; i <= 60; i++) {
+          const xf = i / 60;
+          const x  = cx - pW * 0.5 + xf * pW;
+          const y  = topCY + dw.yOff + Math.sin(xf * Math.PI * dw.freq + ts * speed + dw.phase) * pHalf * dw.amp;
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.stroke(); ctx.shadowBlur = 0;
+      }
+      ctx.globalAlpha = da;
+      ctx.font = `500 ${fsLabel}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = "rgba(200,245,255,0.50)";
+      ctx.textAlign = "center";
+      ctx.fillText("DISTORTED OPTICAL SIGNAL", cx, topCY - pHalf - fsLabel * 0.5);
+
+      // Arrow: top → chip
+      ctx.strokeStyle = "rgba(200,245,255,0.28)";
+      ctx.lineWidth = Math.max(1, chipS * 0.014);
+      ctx.beginPath();
+      ctx.moveTo(cx, topCY + pHalf + 2); ctx.lineTo(cx, chipCY - hs - 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx - ah, chipCY - hs - ah); ctx.lineTo(cx, chipCY - hs);
+      ctx.lineTo(cx + ah, chipCY - hs - ah); ctx.stroke();
+
+      // Chip
+      ctx.fillStyle = C.xcvrBg; ctx.strokeStyle = C.xcvrBrd; ctx.lineWidth = 1.5;
+      ctx.fillRect(cx - hs, chipCY - hs, chipS, chipS);
+      ctx.strokeRect(cx - hs, chipCY - hs, chipS, chipS);
+      ctx.shadowColor = C.xcvrBrd; ctx.shadowBlur = 14;
+      ctx.strokeStyle = "rgba(200,245,255,0.12)"; ctx.lineWidth = 1;
+      ctx.strokeRect(cx - hs - 4, chipCY - hs - 4, chipS + 8, chipS + 8);
+      ctx.shadowBlur = 0;
+      const fsC = Math.max(7, chipS * 0.12);
+      ctx.font = `600 ${fsC}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = "rgba(200,245,255,0.30)"; ctx.textAlign = "center";
+      ctx.fillText("XCVR", cx, chipCY + chipS * 0.07);
+      ctx.font = `500 ${fsC * 0.75}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = "rgba(200,245,255,0.16)";
+      ctx.fillText("DSP", cx, chipCY + chipS * 0.26);
+
+      // 20W — right of chip
+      ctx.font = `700 ${fsPow}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = C.power; ctx.shadowColor = C.power; ctx.shadowBlur = 10;
+      ctx.fillText("20W", cx + hs + fsPow * 0.2 + fsPow, chipCY + fsPow * 0.35);
+      ctx.shadowBlur = 0;
+      ctx.font = `500 ${Math.max(7, fsLabel * 0.85)}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = "rgba(255,107,53,0.50)";
+      ctx.fillText("per link", cx + hs + fsPow * 0.2 + fsPow, chipCY + fsPow * 0.35 + fsLabel * 1.8);
+
+      // Arrow: chip → bottom
+      ctx.strokeStyle = "rgba(122,182,255,0.36)";
+      ctx.lineWidth = Math.max(1, chipS * 0.014);
+      ctx.beginPath();
+      ctx.moveTo(cx, chipCY + hs + 2); ctx.lineTo(cx, botCY - pHalf - 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx - ah, botCY - pHalf - ah + 2); ctx.lineTo(cx, botCY - pHalf + 2);
+      ctx.lineTo(cx + ah, botCY - pHalf - ah + 2); ctx.stroke();
+
+      // Bottom: clean signal
+      ctx.globalAlpha = da * 0.90;
+      ctx.strokeStyle = "#7ab6ff"; ctx.lineWidth = Math.max(1, chipS * 0.016);
+      ctx.shadowColor = "#7ab6ff"; ctx.shadowBlur = 5;
+      ctx.beginPath();
+      for (let i = 0; i <= 60; i++) {
+        const xf = i / 60;
+        const x  = cx - pW * 0.5 + xf * pW;
+        const y  = botCY + Math.sin(xf * Math.PI * 5 + ts * speed) * pHalf * 0.38;
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke(); ctx.shadowBlur = 0;
+      ctx.globalAlpha = da;
+      ctx.font = `500 ${fsLabel}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = "rgba(122,182,255,0.50)"; ctx.textAlign = "center";
+      ctx.fillText("CLEAN ELECTRICAL SIGNAL", cx, botCY + pHalf + fsLabel * 1.5);
+      ctx.textAlign = "left"; ctx.globalAlpha = 1;
+      return;
+    }
+
+    /* ── LANDSCAPE / DESKTOP: horizontal layout ── */
     const cy = h * 0.47;
     const cx = w / 2;
 
@@ -341,7 +461,6 @@
     const rPanelX = cx + hs + gap;           // right signal x start
 
     const fsLabel  = Math.max(9, Math.min(w * 0.0095, 13));
-    const speed    = 0.0007;                  // wave scroll speed (ts units)
 
     ctx.globalAlpha = da;
 

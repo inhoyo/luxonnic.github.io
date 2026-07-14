@@ -119,6 +119,7 @@
       position: sticky;
       top: 0;
       height: 100vh;
+      height: 100dvh; /* iOS: excludes browser chrome */
       overflow: hidden;
       background: var(--void);
     }
@@ -246,7 +247,17 @@
     @media (max-width: 700px) {
       .scene-wrapper       { height: 440vh; }
       .scene-panel-text    { left: 1.25rem; bottom: 2rem; max-width: 88vw; }
+      .scene-panel-heading { font-size: clamp(1.6rem, 6vw, 2.4rem); }
       .scene-progress      { right: 0.75rem; }
+      /* Taller gradient so chips stay visible above the text area */
+      .scene-overlay-gradient {
+        background: linear-gradient(
+          to top,
+          rgba(9, 9, 15, 0.96) 0%,
+          rgba(9, 9, 15, 0.60) 22%,
+          rgba(9, 9, 15, 0) 48%
+        );
+      }
     }
   </style>
 </head>
