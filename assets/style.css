@@ -669,6 +669,21 @@ a {
   outline: none;
 }
 
+.modal-photo {
+  display: block;
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid rgba(var(--iris-rgb), 0.6);
+  box-shadow: 0 0 26px rgba(var(--photon-rgb), 0.2);
+  margin-bottom: 1.5rem;
+}
+
+.modal-photo[hidden] {
+  display: none;
+}
+
 .modal-name {
   font-family: "Space Grotesk", sans-serif;
   font-weight: 700;
