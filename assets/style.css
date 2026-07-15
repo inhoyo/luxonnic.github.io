@@ -324,6 +324,17 @@ a {
   fill: var(--iris);
 }
 
+.flow-dot {
+  fill: var(--photon);
+  filter: drop-shadow(0 0 3px rgba(var(--photon-rgb), 0.8));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-dot {
+    display: none;
+  }
+}
+
 .diagram-label {
   font-family: "JetBrains Mono", monospace;
   font-size: 9px;

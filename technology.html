@@ -112,7 +112,7 @@
 
     .scene-wrapper {
       position: relative;
-      height: 500vh;
+      height: 700vh;
     }
 
     .scene-sticky {
@@ -245,7 +245,7 @@
     }
 
     @media (max-width: 700px) {
-      .scene-wrapper       { height: 440vh; }
+      .scene-wrapper       { height: 600vh; }
       .scene-panel-text    { left: 1.25rem; bottom: 2rem; max-width: 88vw; }
       .scene-panel-heading { font-size: clamp(1.6rem, 6vw, 2.4rem); }
       .scene-progress      { right: 0.75rem; }
@@ -323,6 +323,20 @@
         <p class="scene-panel-body">Every transceiver contains a DSP that reconstructs the signal from the optical chaos. That digital processing burns 20 W — per link.</p>
       </div>
 
+      <!-- Panel 5: the pivot question -->
+      <div class="scene-panel-text" data-panel="5">
+        <span class="scene-panel-eyebrow">02 — The Idea</span>
+        <h2 class="scene-panel-heading">What if we didn&rsquo;t<br>clean this up with electrons?</h2>
+        <p class="scene-panel-body">Instead of converting the distorted light into electrons just to fix it, what if the correction happened directly in the optical domain — before the photons ever become electricity?</p>
+      </div>
+
+      <!-- Panel 6: the answer — LUXONNICore -->
+      <div class="scene-panel-text" data-panel="6">
+        <span class="scene-panel-eyebrow">03 — The Answer</span>
+        <h2 class="scene-panel-heading">The LUXONNICore.<br>No electrons required.</h2>
+        <p class="scene-panel-body">It replaces the transceiver's DSP outright — taking the same distorted optical signal in, and putting a clean optical signal out, without ever converting to electricity. All at under 1 W.</p>
+      </div>
+
       <!-- Right-side progress dots -->
       <div class="scene-progress" aria-hidden="true">
         <div class="scene-progress-dot is-active" data-step="0"></div>
@@ -330,6 +344,8 @@
         <div class="scene-progress-dot" data-step="2"></div>
         <div class="scene-progress-dot" data-step="3"></div>
         <div class="scene-progress-dot" data-step="4"></div>
+        <div class="scene-progress-dot" data-step="5"></div>
+        <div class="scene-progress-dot" data-step="6"></div>
       </div>
 
       <div class="scene-scroll-hint" id="scene-hint" aria-hidden="true">scroll</div>

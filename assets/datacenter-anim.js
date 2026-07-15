@@ -1,12 +1,15 @@
 /**
- * datacenter-anim.js — Chapter 01 scroll scene (v3)
+ * datacenter-anim.js — Chapter 01 scroll scene (v5)
  *
- * 5 scenes driven by scroll within #scene-gpu:
+ * 7 scenes driven by scroll within #scene-gpu:
  *   0  — small GPU cluster, electrons flowing
  *   1  — grid expands to full datacenter scale
  *   2  — transceiver chips appear; clean photon travels between them
  *   3  — photon splits into 3 coloured copies: chromatic dispersion
  *   4  — camera zooms into XCVR; distorted signal arrives; DSP cost revealed
+ *   5  — hold on zoomed XCVR; the pivot question (optical-domain correction)
+ *   6  — the zoomed chip morphs: XCVR/DSP/20W/electrical-out
+ *        → LUXONNICORE/<1W/optical-out
  */
 
 (function () {
@@ -60,10 +63,30 @@
 
   /* ─── scene state ───────────────────────────────────────────── */
   let scene = 0, sceneP = 0.0;
-  const N = 5;
+  const N = 7;
   const FINAL_ZOOM = 5.5;
 
   function easeIO(t) { return t < 0.5 ? 2*t*t : -1 + (4 - 2*t)*t; }
+
+  /* ─── colour lerp helpers (for the scene 6 XCVR → LUXONNICore morph) ── */
+  function lerpRGB(c1, c2, t) {
+    return [
+      c1[0] + (c2[0] - c1[0]) * t,
+      c1[1] + (c2[1] - c1[1]) * t,
+      c1[2] + (c2[2] - c1[2]) * t,
+    ];
+  }
+  function rgbStr(c, a) {
+    return `rgba(${c[0] | 0}, ${c[1] | 0}, ${c[2] | 0}, ${a === undefined ? 1 : a})`;
+  }
+  const ELECTRICAL_RGB = [122, 182, 255]; // #7ab6ff
+  const PHOTON_RGB     = [200, 245, 255]; // #c8f5ff
+
+  /* scene 6 morph progress: 0 = XCVR/DSP/20W, 1 = LUXONNICORE/<1W */
+  function coreT() {
+    if (scene < 6) return 0;
+    return easeIO(Math.min(1, sceneP));
+  }
 
   /* ─── camera ───────────────────────────────────────────────── */
   function getZoomTarget() {
@@ -73,7 +96,8 @@
 
   function cameraZoomT() {
     if (scene < 4) return 0;
-    return easeIO(Math.min(1, sceneP));
+    if (scene === 4) return easeIO(Math.min(1, sceneP));
+    return 1; // scene 5: hold at full zoom
   }
 
   /* ─── visibility helpers ────────────────────────────────────── */
@@ -99,17 +123,20 @@
   function photonOpacity() {
     const base = photonBaseOpacity();
     if (scene < 4) return base;
-    return base * Math.max(0, 1 - sceneP * 2.8); // fade out as we zoom in
+    if (scene === 4) return base * Math.max(0, 1 - sceneP * 2.8); // fade out as we zoom in
+    return 0; // scene 5: photon stays gone, we're zoomed past it
   }
 
   function gridFade() {
     if (scene < 4) return 1.0;
-    return Math.max(0, 1 - sceneP * 3.0);
+    if (scene === 4) return Math.max(0, 1 - sceneP * 3.0);
+    return 0; // scene 5: grid stays hidden
   }
 
   function detailAlpha() {
     if (scene < 4) return 0;
-    return Math.min(1, Math.max(0, (sceneP - 0.30) * 3.2));
+    if (scene === 4) return Math.min(1, Math.max(0, (sceneP - 0.30) * 3.2));
+    return 1; // scene 5: keep the zoomed XCVR detail fully shown
   }
 
   /* ─── electrons ─────────────────────────────────────────────── */
@@ -335,6 +362,7 @@
 
     const w = cssW(), h = cssH();
     const speed = 0.0007;
+    const ct = coreT();
 
     /* ── PORTRAIT / MOBILE: vertical stack ── */
     if (w < h * 0.8) {
@@ -401,21 +429,46 @@
       ctx.strokeRect(cx - hs - 4, chipCY - hs - 4, chipS + 8, chipS + 8);
       ctx.shadowBlur = 0;
       const fsC = Math.max(7, chipS * 0.12);
-      ctx.font = `600 ${fsC}px "JetBrains Mono", monospace`;
-      ctx.fillStyle = "rgba(200,245,255,0.30)"; ctx.textAlign = "center";
-      ctx.fillText("XCVR", cx, chipCY + chipS * 0.07);
-      ctx.font = `500 ${fsC * 0.75}px "JetBrains Mono", monospace`;
-      ctx.fillStyle = "rgba(200,245,255,0.16)";
-      ctx.fillText("DSP", cx, chipCY + chipS * 0.26);
+      ctx.textAlign = "center";
+      if (ct < 0.999) {
+        ctx.globalAlpha = da * (1 - ct);
+        ctx.font = `600 ${fsC}px "JetBrains Mono", monospace`;
+        ctx.fillStyle = "rgba(200,245,255,0.30)";
+        ctx.fillText("XCVR", cx, chipCY + chipS * 0.07);
+        ctx.font = `500 ${fsC * 0.75}px "JetBrains Mono", monospace`;
+        ctx.fillStyle = "rgba(200,245,255,0.16)";
+        ctx.fillText("DSP", cx, chipCY + chipS * 0.26);
+      }
+      if (ct > 0.001) {
+        ctx.globalAlpha = da * ct;
+        ctx.font = `600 ${fsC * 0.62}px "JetBrains Mono", monospace`;
+        ctx.fillStyle = "rgba(200,245,255,0.36)";
+        ctx.fillText("LUXONNICORE", cx, chipCY + chipS * 0.14);
+      }
+      ctx.globalAlpha = da;
 
-      // 20W — right of chip
-      ctx.font = `700 ${fsPow}px "JetBrains Mono", monospace`;
-      ctx.fillStyle = C.power; ctx.shadowColor = C.power; ctx.shadowBlur = 10;
-      ctx.fillText("20W", cx + hs + fsPow * 0.2 + fsPow, chipCY + fsPow * 0.35);
-      ctx.shadowBlur = 0;
-      ctx.font = `500 ${Math.max(7, fsLabel * 0.85)}px "JetBrains Mono", monospace`;
-      ctx.fillStyle = "rgba(255,107,53,0.50)";
-      ctx.fillText("per link", cx + hs + fsPow * 0.2 + fsPow, chipCY + fsPow * 0.35 + fsLabel * 1.8);
+      // Power — crossfades 20W (ember) → <1W (photon)
+      if (ct < 0.999) {
+        ctx.globalAlpha = da * (1 - ct);
+        ctx.font = `700 ${fsPow}px "JetBrains Mono", monospace`;
+        ctx.fillStyle = C.power; ctx.shadowColor = C.power; ctx.shadowBlur = 10;
+        ctx.fillText("20W", cx + hs + fsPow * 0.2 + fsPow, chipCY + fsPow * 0.35);
+        ctx.shadowBlur = 0;
+        ctx.font = `500 ${Math.max(7, fsLabel * 0.85)}px "JetBrains Mono", monospace`;
+        ctx.fillStyle = "rgba(255,107,53,0.50)";
+        ctx.fillText("per link", cx + hs + fsPow * 0.2 + fsPow, chipCY + fsPow * 0.35 + fsLabel * 1.8);
+      }
+      if (ct > 0.001) {
+        ctx.globalAlpha = da * ct;
+        ctx.font = `700 ${fsPow}px "JetBrains Mono", monospace`;
+        ctx.fillStyle = C.phGlow; ctx.shadowColor = C.phGlow; ctx.shadowBlur = 10;
+        ctx.fillText("<1W", cx + hs + fsPow * 0.2 + fsPow, chipCY + fsPow * 0.35);
+        ctx.shadowBlur = 0;
+        ctx.font = `500 ${Math.max(7, fsLabel * 0.85)}px "JetBrains Mono", monospace`;
+        ctx.fillStyle = "rgba(200,245,255,0.55)";
+        ctx.fillText("per link", cx + hs + fsPow * 0.2 + fsPow, chipCY + fsPow * 0.35 + fsLabel * 1.8);
+      }
+      ctx.globalAlpha = da;
 
       // Arrow: chip → bottom
       ctx.strokeStyle = "rgba(122,182,255,0.36)";
@@ -427,10 +480,11 @@
       ctx.moveTo(cx - ah, botCY - pHalf - ah + 2); ctx.lineTo(cx, botCY - pHalf + 2);
       ctx.lineTo(cx + ah, botCY - pHalf - ah + 2); ctx.stroke();
 
-      // Bottom: clean signal
+      // Bottom: clean signal (electrical → optical as ct → 1)
+      const mCleanCol = rgbStr(lerpRGB(ELECTRICAL_RGB, PHOTON_RGB, ct));
       ctx.globalAlpha = da * 0.90;
-      ctx.strokeStyle = "#7ab6ff"; ctx.lineWidth = Math.max(1, chipS * 0.016);
-      ctx.shadowColor = "#7ab6ff"; ctx.shadowBlur = 5;
+      ctx.strokeStyle = mCleanCol; ctx.lineWidth = Math.max(1, chipS * 0.016);
+      ctx.shadowColor = mCleanCol; ctx.shadowBlur = 5;
       ctx.beginPath();
       for (let i = 0; i <= 60; i++) {
         const xf = i / 60;
@@ -439,10 +493,18 @@
         i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
       }
       ctx.stroke(); ctx.shadowBlur = 0;
-      ctx.globalAlpha = da;
       ctx.font = `500 ${fsLabel}px "JetBrains Mono", monospace`;
-      ctx.fillStyle = "rgba(122,182,255,0.50)"; ctx.textAlign = "center";
-      ctx.fillText("CLEAN ELECTRICAL SIGNAL", cx, botCY + pHalf + fsLabel * 1.5);
+      ctx.textAlign = "center";
+      if (ct < 0.999) {
+        ctx.globalAlpha = da * (1 - ct) * 0.90;
+        ctx.fillStyle = "rgba(122,182,255,0.50)";
+        ctx.fillText("CLEAN ELECTRICAL SIGNAL", cx, botCY + pHalf + fsLabel * 1.5);
+      }
+      if (ct > 0.001) {
+        ctx.globalAlpha = da * ct * 0.90;
+        ctx.fillStyle = "rgba(200,245,255,0.55)";
+        ctx.fillText("CLEAN OPTICAL SIGNAL", cx, botCY + pHalf + fsLabel * 1.5);
+      }
       ctx.textAlign = "left"; ctx.globalAlpha = 1;
       return;
     }
@@ -529,26 +591,51 @@
     ctx.fillStyle   = "rgba(200,245,255,0.10)"; ctx.fill();
     ctx.strokeStyle = "rgba(200,245,255,0.30)"; ctx.lineWidth = 1; ctx.stroke();
 
-    // Chip text
+    // Chip text — crossfades XCVR/DSP → LUXONNICORE
     const fsChip = Math.max(8, chipS * 0.12);
-    ctx.font      = `600 ${fsChip}px "JetBrains Mono", monospace`;
-    ctx.fillStyle = "rgba(200,245,255,0.32)";
     ctx.textAlign = "center";
-    ctx.fillText("XCVR", cx, cy + chipS * 0.07);
-    ctx.font      = `500 ${fsChip * 0.75}px "JetBrains Mono", monospace`;
-    ctx.fillStyle = "rgba(200,245,255,0.18)";
-    ctx.fillText("DSP", cx, cy + chipS * 0.26);
+    if (ct < 0.999) {
+      ctx.globalAlpha = da * (1 - ct);
+      ctx.font = `600 ${fsChip}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = "rgba(200,245,255,0.32)";
+      ctx.fillText("XCVR", cx, cy + chipS * 0.07);
+      ctx.font = `500 ${fsChip * 0.75}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = "rgba(200,245,255,0.18)";
+      ctx.fillText("DSP", cx, cy + chipS * 0.26);
+    }
+    if (ct > 0.001) {
+      ctx.globalAlpha = da * ct;
+      ctx.font = `600 ${fsChip * 0.65}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = "rgba(200,245,255,0.38)";
+      ctx.fillText("LUXONNICORE", cx, cy + chipS * 0.14);
+    }
+    ctx.globalAlpha = da;
 
-    // 20W label below chip
+    // Power label below chip — crossfades 20W (ember) → <1W (photon)
     const fsPow = Math.max(13, chipS * 0.42);
-    ctx.font      = `700 ${fsPow}px "JetBrains Mono", monospace`;
-    ctx.fillStyle = C.power;
-    ctx.shadowColor = C.power; ctx.shadowBlur = chipS * 0.16;
-    ctx.fillText("20W", cx, cy + hs + fsPow * 1.15);
-    ctx.shadowBlur = 0;
-    ctx.font      = `500 ${Math.max(8, w * 0.0085)}px "JetBrains Mono", monospace`;
-    ctx.fillStyle = "rgba(255,107,53,0.55)";
-    ctx.fillText("per transceiver", cx, cy + hs + fsPow * 1.15 + fsLabel * 1.6);
+    if (ct < 0.999) {
+      ctx.globalAlpha = da * (1 - ct);
+      ctx.font = `700 ${fsPow}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = C.power;
+      ctx.shadowColor = C.power; ctx.shadowBlur = chipS * 0.16;
+      ctx.fillText("20W", cx, cy + hs + fsPow * 1.15);
+      ctx.shadowBlur = 0;
+      ctx.font = `500 ${Math.max(8, w * 0.0085)}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = "rgba(255,107,53,0.55)";
+      ctx.fillText("per transceiver", cx, cy + hs + fsPow * 1.15 + fsLabel * 1.6);
+    }
+    if (ct > 0.001) {
+      ctx.globalAlpha = da * ct;
+      ctx.font = `700 ${fsPow}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = C.phGlow;
+      ctx.shadowColor = C.phGlow; ctx.shadowBlur = chipS * 0.16;
+      ctx.fillText("<1W", cx, cy + hs + fsPow * 1.15);
+      ctx.shadowBlur = 0;
+      ctx.font = `500 ${Math.max(8, w * 0.0085)}px "JetBrains Mono", monospace`;
+      ctx.fillStyle = "rgba(200,245,255,0.60)";
+      ctx.fillText("per transceiver", cx, cy + hs + fsPow * 1.15 + fsLabel * 1.6);
+    }
+    ctx.globalAlpha = da;
 
     // ─── Arrow: chip → right panel ──────────────────────────────
     ctx.strokeStyle = "rgba(122,182,255,0.38)";
@@ -563,11 +650,12 @@
     ctx.lineTo(rPanelX + panelW - ah, cy + ah * 0.5);
     ctx.stroke();
 
-    // ─── Right panel: clean electrical signal ───────────────────
+    // ─── Right panel: clean signal (electrical → optical as ct → 1) ──
+    const dCleanCol = rgbStr(lerpRGB(ELECTRICAL_RGB, PHOTON_RGB, ct));
     ctx.globalAlpha = da * 0.92;
-    ctx.strokeStyle = "#7ab6ff";
+    ctx.strokeStyle = dCleanCol;
     ctx.lineWidth   = Math.max(1.5, chipS * 0.020);
-    ctx.shadowColor = "#7ab6ff"; ctx.shadowBlur = 6;
+    ctx.shadowColor = dCleanCol; ctx.shadowBlur = 6;
     ctx.beginPath();
     for (let i = 0; i <= 80; i++) {
       const xf = i / 80;
@@ -577,13 +665,20 @@
     }
     ctx.stroke();
     ctx.shadowBlur = 0;
-    ctx.globalAlpha = da;
 
     // Right label
     ctx.font      = `500 ${fsLabel}px "JetBrains Mono", monospace`;
-    ctx.fillStyle = "rgba(122,182,255,0.52)";
     ctx.textAlign = "center";
-    ctx.fillText("CLEAN ELECTRICAL SIGNAL", rPanelX + panelW / 2, cy - panelH * 0.68);
+    if (ct < 0.999) {
+      ctx.globalAlpha = da * (1 - ct) * 0.92;
+      ctx.fillStyle = "rgba(122,182,255,0.52)";
+      ctx.fillText("CLEAN ELECTRICAL SIGNAL", rPanelX + panelW / 2, cy - panelH * 0.68);
+    }
+    if (ct > 0.001) {
+      ctx.globalAlpha = da * ct * 0.92;
+      ctx.fillStyle = "rgba(200,245,255,0.56)";
+      ctx.fillText("CLEAN OPTICAL SIGNAL", rPanelX + panelW / 2, cy - panelH * 0.68);
+    }
 
     ctx.textAlign   = "left";
     ctx.globalAlpha = 1;
@@ -712,7 +807,10 @@
 
     const raw = t * N;
     scene  = Math.min(N - 1, Math.floor(raw));
-    sceneP = raw % 1;
+    // raw - scene (not raw % 1): once raw reaches exactly N, scene clamps to
+    // N-1 but raw%1 would wrap to 0, snapping the last scene back to its
+    // start. raw - scene stays at 1 in that case, holding the final state.
+    sceneP = raw - scene;
 
     // Scroll-driven panel animation: scale + opacity tied to position within scene
     PANELS.forEach(p => {
