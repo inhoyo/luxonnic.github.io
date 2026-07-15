@@ -503,9 +503,13 @@ a {
 
 .page-hero {
   position: relative;
+  min-height: 60vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 6rem 2.5rem 4rem;
-  max-width: 900px;
-  margin: 0 auto;
   text-align: left;
   overflow: hidden;
 }
@@ -552,8 +556,36 @@ a {
 }
 
 .member {
+  display: block;
+  width: 100%;
   border-top: 1px solid rgba(var(--iris-rgb), 0.4);
-  padding-top: 1.5rem;
+  padding: 1.5rem 0 0;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.member:hover,
+.member:focus-visible {
+  border-top-color: var(--photon);
+  outline: none;
+}
+
+.member-more {
+  display: inline-block;
+  margin-top: 1rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ghost);
+  transition: color 0.2s ease;
+}
+
+.member:hover .member-more,
+.member:focus-visible .member-more {
+  color: var(--photon);
 }
 
 .member-name {
@@ -579,6 +611,93 @@ a {
   font-size: 0.9rem;
   color: var(--ghost);
   line-height: 1.6;
+}
+
+/* ==== Team member modal ==== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(9, 9, 15, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.modal-overlay[hidden] {
+  display: none;
+}
+
+.modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  max-height: 84vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid rgba(var(--iris-rgb), 0.5);
+  padding: 2.75rem 2.25rem 2.25rem;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  appearance: none;
+  background: none;
+  border: 1px solid rgba(var(--iris-rgb), 0.4);
+  color: var(--ghost);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.modal-close:hover,
+.modal-close:focus-visible {
+  color: var(--photon);
+  border-color: var(--photon);
+  outline: none;
+}
+
+.modal-name {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--ink);
+  padding-right: 2rem;
+}
+
+.modal-role {
+  margin-top: 0.5rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--photon);
+}
+
+.modal-bio {
+  margin-top: 1.25rem;
+  font-family: "Inter", sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: var(--ink);
+  opacity: 0.85;
+}
+
+body.modal-open {
+  overflow: hidden;
 }
 
 /* ==== Custom cursor ==== */

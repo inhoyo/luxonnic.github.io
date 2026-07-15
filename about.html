@@ -63,7 +63,7 @@
       <span class="eyebrow-mono">HHI · BERLIN</span>
     </div>
     <div class="team-grid">
-      <div class="member reveal">
+      <div class="member reveal" role="button" tabindex="0">
         <h3 class="member-name">In-Ho Baek</h3>
         <p class="member-role">Co-Founder · CEO</p>
         <p class="member-bio">
@@ -71,8 +71,23 @@
           Baden-Württemberg Scholar · Lecturer Since 2022 · Best Student
           Paper Award, OECC 2026
         </p>
+        <span class="member-more">View Profile →</span>
+        <div class="member-detail" hidden>
+          Dr.-Ing. candidate, TU Berlin (submission June 2026). Researcher
+          at Fraunhofer HHI in the Photonic Networks &amp; Systems
+          department, formerly specializing in THz wireless communications,
+          probabilistic constellation shaping, and real-time DSP. Holds a
+          world record in 300 GHz dual-polarization THz transmission —
+          221.5 Gb/s over 500 m — the longest-range, highest-capacity
+          photonic THz link demonstrated at this frequency band. Alumnus of KIT (Karlsruhe) and KAIST, Baden-Württemberg
+          Scholar, lecturer at Berlin Universities since 2022, and winner of the Best
+          Student Paper Award at OECC 2026 (Busan). Invited speaker at
+          Seoul National University (June 2026). Active in Korean–German
+          R&amp;D partnership strategy spanning TIPA, Horizon Europe, and
+          bilateral instruments.
+        </div>
       </div>
-      <div class="member reveal">
+      <div class="member reveal" role="button" tabindex="0">
         <h3 class="member-name">Mahdi Kaveh</h3>
         <p class="member-role">Co-Founder · CTO</p>
         <p class="member-bio">
@@ -80,8 +95,12 @@
           Wireless Telecom · Fraunhofer HHI Researcher · Neuromorphic
           Computing &amp; ML
         </p>
+        <span class="member-more">View Profile →</span>
+        <div class="member-detail" hidden>
+          Research Associate in neuromorphic photonics at Fraunhofer HHI. His research focuses on photonic neural networks and reservoir computing with PICs for optical signal processing. Co-author on relevant publications in demonstrations of photonic reservoir computing for signal processing. Active contributor to national and international projects. Holds dual M.Sc. degrees in Electronic Engineering from K. N. Toosi University of Technology (Tehran) and BHT Berlin.
+        </div>
       </div>
-      <div class="member reveal">
+      <div class="member reveal" role="button" tabindex="0">
         <h3 class="member-name">Dr. Colja Schubert</h3>
         <p class="member-role">Scientific Advisor</p>
         <p class="member-bio">
@@ -89,9 +108,22 @@
           Submarine &amp; Core Systems Group · Deputy Department Head ·
           German Physical Society Member
         </p>
+        <span class="member-more">View Profile →</span>
+        <div class="member-detail" hidden>
+          One of Europe's most recognized faces in high-speed optical transmission. Dr. rer. nat. in physics from TU Berlin (2004), with 25+ years at Fraunhofer HHI where he heads the Submarine & Core Systems group and serves as Deputy Head of the Photonic Networks & Systems department. Author and co-author of over 450 peer-reviewed papers spanning coherent fiber-optic systems, THz wireless communications, and optical signal processing. Member of the German Physical Society (DPG).
+        </div>
       </div>
     </div>
   </section>
+
+  <div class="modal-overlay" id="member-modal" role="dialog" aria-modal="true" aria-labelledby="member-modal-name" hidden>
+    <div class="modal-card">
+      <button class="modal-close" type="button" aria-label="Close">&times;</button>
+      <h3 class="modal-name" id="member-modal-name"></h3>
+      <p class="modal-role"></p>
+      <p class="modal-bio"></p>
+    </div>
+  </div>
 
   <footer class="footer-cta">
     <a
@@ -127,5 +159,6 @@
   <script src="assets/background.js"></script>
   <script src="assets/cursor.js"></script>
   <script src="assets/reveal.js"></script>
+  <script src="assets/member-modal.js"></script>
 </body>
 </html>

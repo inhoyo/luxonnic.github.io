@@ -23,7 +23,7 @@
     cursor.classList.remove("is-visible");
   });
 
-  var HOVER_SELECTOR = "a, button, .nav-link, .wordmark";
+  var HOVER_SELECTOR = "a, button, .nav-link, .wordmark, [role='button']";
 
   function bindHover() {
     document.querySelectorAll(HOVER_SELECTOR).forEach(function (el) {
