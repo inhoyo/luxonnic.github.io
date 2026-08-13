@@ -25,10 +25,10 @@
 
   /* ─── palette ──────────────────────────────────────────────── */
   const C = {
-    gridLine:   "rgba(72, 95, 150, 0.22)",
-    eDim:       "rgba(90, 148, 255, 0.28)",
-    chipBg:     "#0d0d1f",
-    chipBorder: "rgba(62, 82, 140, 0.45)",
+    gridLine:   "rgba(110, 140, 200, 0.42)",
+    eDim:       "rgba(165, 205, 255, 0.78)",
+    chipBg:     "#181c3a",
+    chipBorder: "rgba(155, 185, 240, 0.88)",
     xcvrBg:     "#0b1420",
     xcvrBrd:    "#c8f5ff",
     phGlow:     "#c8f5ff",
@@ -163,7 +163,7 @@
 
     ctx.fillStyle   = xcvr ? C.xcvrBg   : C.chipBg;
     ctx.strokeStyle = xcvr ? C.xcvrBrd  : C.chipBorder;
-    ctx.lineWidth   = xcvr ? 1.3 : 0.8;
+    ctx.lineWidth   = xcvr ? 1.3 : 1.2;
     ctx.fillRect(cx - hs, cy - hs, s, s);
     ctx.strokeRect(cx - hs, cy - hs, s, s);
 
@@ -173,11 +173,11 @@
       ctx.strokeStyle = "rgba(200,245,255,0.50)"; ctx.lineWidth = 0.7; ctx.stroke();
     } else {
       const ds = s * 0.36;
-      ctx.fillStyle = "rgba(55,70,130,0.14)";
+      ctx.fillStyle = "rgba(140,170,235,0.40)";
       ctx.fillRect(cx - ds/2, cy - ds/2, ds, ds);
     }
 
-    ctx.fillStyle = xcvr ? "rgba(200,245,255,0.40)" : "rgba(62,82,140,0.30)";
+    ctx.fillStyle = xcvr ? "rgba(200,245,255,0.40)" : "rgba(155,185,240,0.68)";
     for (let i = 1; i <= 3; i++) {
       const off = (i / 4) * s - hs;
       ctx.fillRect(cx + off - ps/2, cy - hs - ps*1.8, ps, ps*1.8);
@@ -728,7 +728,7 @@
           const q = gxy(c2, r2);
           ctx.globalAlpha = a;
           ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
-          ctx.strokeStyle = C.gridLine; ctx.lineWidth = 0.85; ctx.stroke();
+          ctx.strokeStyle = C.gridLine; ctx.lineWidth = 1.0; ctx.stroke();
           ctx.globalAlpha = 1;
         };
         if (c < COLS - 1) drawEdge(c + 1, r);
@@ -741,9 +741,9 @@
       const ea = edgeAlpha(e.c1, e.r1, e.c2, e.r2) * gf;
       if (ea < 0.05) continue;
       const p1 = gxy(e.c1, e.r1), p2 = gxy(e.c2, e.r2);
-      ctx.globalAlpha = ea * 0.55;
+      ctx.globalAlpha = ea * 0.75;
       ctx.beginPath();
-      ctx.arc(p1.x + (p2.x - p1.x) * e.t, p1.y + (p2.y - p1.y) * e.t, 2.0, 0, Math.PI * 2);
+      ctx.arc(p1.x + (p2.x - p1.x) * e.t, p1.y + (p2.y - p1.y) * e.t, 2.3, 0, Math.PI * 2);
       ctx.fillStyle = C.eDim; ctx.fill();
       ctx.globalAlpha = 1;
     }
