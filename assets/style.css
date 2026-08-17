@@ -441,11 +441,12 @@ a {
 }
 
 .visit-mark {
-  font-size: 6px;
-  color: rgba(74, 74, 94, 0.35);
-  letter-spacing: 0.02em;
-  user-select: none;
+  height: 7px;
+  width: auto;
+  vertical-align: middle;
   margin-left: 0.5em;
+  opacity: 0.3;
+  filter: grayscale(1);
 }
 
 .affiliation {
