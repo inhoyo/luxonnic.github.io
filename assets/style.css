@@ -440,6 +440,14 @@ a {
   color: var(--photon);
 }
 
+.visit-mark {
+  font-size: 6px;
+  color: rgba(74, 74, 94, 0.35);
+  letter-spacing: 0.02em;
+  user-select: none;
+  margin-left: 0.5em;
+}
+
 .affiliation {
   margin-top: 3rem;
   display: flex;
