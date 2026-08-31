@@ -121,6 +121,12 @@ a {
   object-fit: cover;
 }
 
+@media (max-aspect-ratio: 1/1) {
+  #intro-video {
+    object-fit: contain;
+  }
+}
+
 #intro-skip {
   position: absolute;
   right: 1.5rem;
