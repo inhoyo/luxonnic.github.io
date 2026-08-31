@@ -21,6 +21,13 @@
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
+  <div id="intro" aria-hidden="true">
+    <video id="intro-video" muted playsinline preload="auto">
+      <source src="assets/video/lux_landing.mp4" type="video/mp4" />
+    </video>
+    <button id="intro-skip" type="button">Skip ↓</button>
+  </div>
+
   <nav class="nav">
     <a class="wordmark" href="index.html">LUXONNIC</a>
     <div class="nav-right">
@@ -231,5 +238,6 @@
   <script src="assets/cursor.js"></script>
   <script src="assets/metrics.js"></script>
   <script src="assets/reveal.js"></script>
+  <script src="assets/intro.js"></script>
 </body>
 </html>
