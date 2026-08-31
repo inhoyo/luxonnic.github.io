@@ -13,11 +13,12 @@
     return;
   }
 
-  var video = document.getElementById("intro-video");
   var skip = document.getElementById("intro-skip");
+  var timers = [];
 
   function exitIntro() {
     if (intro.classList.contains("intro-exit")) return;
+    timers.forEach(clearTimeout);
     sessionStorage.setItem("luxIntroSeen", "1");
     intro.classList.add("intro-exit");
     document.body.classList.remove("intro-active");
@@ -31,8 +32,11 @@
   }
 
   document.body.classList.add("intro-active");
-  video.addEventListener("ended", exitIntro);
-  video.addEventListener("error", exitIntro);
   skip.addEventListener("click", exitIntro);
-  video.play().catch(exitIntro);
+
+  requestAnimationFrame(function () {
+    intro.classList.add("intro-visible");
+  });
+  timers.push(setTimeout(function () { intro.classList.add("intro-step-2"); }, 900));
+  timers.push(setTimeout(exitIntro, 3000));
 })();
