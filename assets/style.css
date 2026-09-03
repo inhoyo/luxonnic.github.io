@@ -62,12 +62,15 @@ a {
 }
 
 .wordmark {
-  font-family: "Space Grotesk", sans-serif;
-  font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: -0.01em;
-  color: var(--ink);
+  display: flex;
+  align-items: center;
   text-decoration: none;
+}
+
+.wordmark-logo {
+  display: block;
+  height: 1.15rem;
+  width: auto;
 }
 
 .nav-right {
@@ -139,10 +142,10 @@ a {
 .intro-tagline {
   font-family: "Inter", sans-serif;
   font-weight: 600;
-  font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+  font-size: clamp(0.55rem, 2.9vw, 1.2rem);
   color: var(--ink);
   text-align: center;
-  max-width: 26rem;
+  white-space: nowrap;
   padding: 0 1.5rem;
   opacity: 0;
   transform: translateY(8px);
