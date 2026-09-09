@@ -22,6 +22,10 @@ body {
   height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 16px;
@@ -289,6 +293,28 @@ a {
   border-radius: 50%;
   background: var(--ghost);
   animation: scrollDot 2.4s ease-in-out infinite;
+}
+
+.hero-news-cue {
+  position: absolute;
+  right: 1.75rem;
+  bottom: 2.1rem;
+  z-index: 1;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ghost);
+  text-decoration: none;
+  border: 1px solid rgba(var(--iris-rgb), 0.3);
+  padding: 0.55rem 0.95rem;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.hero-news-cue:hover {
+  color: var(--photon);
+  border-color: rgba(var(--iris-rgb), 0.6);
 }
 
 @keyframes scrollDot {
@@ -1000,6 +1026,10 @@ body.modal-open {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }
 
