@@ -7,7 +7,7 @@
   var bioEl = modal.querySelector(".modal-bio");
   var photoEl = modal.querySelector(".modal-photo");
   var closeBtn = modal.querySelector(".modal-close");
-  var cards = document.querySelectorAll(".member");
+  var cards = document.querySelectorAll(".member:not([data-static])");
   var lastFocused = null;
 
   function openModal(card) {

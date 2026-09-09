@@ -769,6 +769,14 @@ a {
   outline: none;
 }
 
+.member[data-static] {
+  cursor: default;
+}
+
+.member[data-static]:hover {
+  border-top-color: rgba(var(--iris-rgb), 0.4);
+}
+
 .member-more {
   display: inline-block;
   margin-top: 1rem;
