@@ -371,7 +371,7 @@ a {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
 
@@ -1007,9 +1007,6 @@ body.modal-open {
 .metric-panel:nth-child(3) {
   --reveal-delay: 0.16s;
 }
-.metric-panel:nth-child(4) {
-  --reveal-delay: 0.24s;
-}
 
 .member:nth-child(1) {
   --reveal-delay: 0s;
@@ -1051,10 +1048,6 @@ body.modal-open {
 @media (max-width: 900px) {
   .nav {
     padding: 1.25rem 1.75rem;
-  }
-
-  .metrics-inner {
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .team-grid {
