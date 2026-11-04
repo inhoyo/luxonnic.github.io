@@ -234,7 +234,7 @@ function mount(container) {
   function frame(now) {
     raf = null;
     if (!visible && !REDUCED) return;
-    const dt = Math.min((now - last) / 1000, 0.05);
+    const dt = Math.max(0, Math.min((now - last) / 1000, 0.05));
     last = now;
     time += REDUCED ? 0 : dt;
     step(dt);
@@ -254,7 +254,7 @@ function mount(container) {
     });
 
     pulses.forEach((p) => {
-      p.t = (p.t + dt * p.speed) % 1;
+      p.t = (((p.t + dt * p.speed) % 1) + 1) % 1;
       tmp.copy(strands[p.strand].curve.getPointAt(p.t));
       wavePoint(tmp, time, strands[p.strand].phase);
       p.sprite.position.copy(tmp);

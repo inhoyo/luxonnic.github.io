@@ -202,7 +202,7 @@ a {
   text-align: center;
   padding: 6rem 1.5rem 5rem;
   overflow: hidden;
-  background: var(--void);
+  background: transparent;
 }
 
 .fiber-bg {
@@ -225,7 +225,7 @@ a {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 58% 48% at 50% 50%, rgba(9, 9, 15, 0.82) 0%, rgba(9, 9, 15, 0) 78%);
+  background: radial-gradient(ellipse 58% 48% at 50% 50%, rgba(9, 9, 15, 0.6) 0%, rgba(9, 9, 15, 0) 78%);
   pointer-events: none;
 }
 
@@ -366,7 +366,7 @@ a {
 /* ==== Metric instruments ==== */
 
 .metrics {
-  background: var(--surface);
+  background: transparent;
   padding: 5.5rem 2.5rem;
 }
 
@@ -491,15 +491,49 @@ a {
   }
 }
 
+/* ==== Scroll progress (Locomotive Scroll) ==== */
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 70;
+  background: linear-gradient(90deg, var(--photon), var(--ember));
+  transform-origin: left center;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
+/* ==== One 3D world behind the whole landing page ==== */
+
+#world {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100svh;
+  z-index: 0;
+  display: block;
+  pointer-events: none;
+}
+
+/* sections sit above the world; the world shows through transparent sections */
+body > section,
+body > footer {
+  position: relative;
+  z-index: 1;
+}
+
 /* ==== Chip stage (3D, How it works) ==== */
 
 .chip-stage {
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
-  overflow: hidden;
-  background: var(--void);
-  border: 1px solid rgba(var(--iris-rgb), 0.35);
+  overflow: visible;
+  background: transparent;
 }
 
 .chip-stage canvas {
@@ -664,7 +698,7 @@ a {
 
 .footer-cta {
   position: relative;
-  background: var(--void);
+  background: transparent;
   padding: 8rem 2.5rem 3rem;
   text-align: center;
   overflow: hidden;

@@ -29,9 +29,13 @@
     }
   </script>
 
+  <!-- Locomotive Scroll v5 (pinned, bundled with its smooth-scroll engine) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@5.0.1/bundled/locomotive-scroll.css" />
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
+  <canvas id="world" aria-hidden="true"></canvas>
+  <div class="scroll-progress" aria-hidden="true"></div>
   <div id="intro" aria-hidden="true">
     <div class="intro-logo-stage">
       <img id="intro-logo" class="intro-logo" src="assets/luxonnic-logo-intro.png" alt="LUXONNIC" />
@@ -54,7 +58,7 @@
 
   <section id="hero">
     <div class="fiber-bg" aria-hidden="true"></div>
-    <div class="hero-content">
+    <div class="hero-content" data-scroll data-scroll-speed="-0.12">
       <h1 class="hero-title reveal">
         We form intelligence<br />with <span class="gradient-word">light</span>.
       </h1>
@@ -91,7 +95,7 @@
   </section>
 
   <section class="split-section">
-    <div class="text-col">
+    <div class="text-col" data-scroll data-scroll-speed="0.05">
       <span class="eyebrow-mono reveal">WHY NOW</span>
       <h2 class="display-h2 reveal" style="--reveal-delay: 0.08s">
         AI factories are hitting a power wall.
@@ -103,16 +107,15 @@
         bandwidth upgrade. The industry cannot keep building this way.
       </p>
     </div>
-        <div class="chip-stage reveal" style="--reveal-delay: 0.1s">
-      <canvas class="lux-scene" data-scene="power" role="img" aria-label="Animated 3D render: a server rack feeds a transceiver whose DSP draws 20 watts, while power climbs with every generation"></canvas>
-      <span class="chip-label chip-label--rack">RACK</span>
+        <div class="chip-stage reveal" data-station="power" style="--reveal-delay: 0.1s">
+            <span class="chip-label chip-label--rack">RACK</span>
       <span class="chip-label chip-label--power">XCVR · DSP · 20W</span>
       <span class="chip-label chip-label--wall">Power wall</span>
     </div>
   </section>
 
   <section class="split-section">
-    <div class="text-col">
+    <div class="text-col" data-scroll data-scroll-speed="0.05">
       <span class="eyebrow-mono reveal">HOW IT WORKS</span>
       <h2 class="display-h2 reveal" style="--reveal-delay: 0.08s">
         A neural network built from light itself.
@@ -124,9 +127,8 @@
         DSP-grade performance at under 1 W.
       </p>
     </div>
-        <div class="chip-stage reveal" style="--reveal-delay: 0.1s">
-      <canvas class="lux-scene" data-scene="chip" role="img" aria-label="Animated 3D render of the photonic chip: distorted light goes in, clean light comes out"></canvas>
-      <span class="chip-label chip-label--in">Distorted in</span>
+        <div class="chip-stage reveal" data-station="signal" style="--reveal-delay: 0.1s">
+            <span class="chip-label chip-label--in">Distorted in</span>
       <span class="chip-label chip-label--out">Clean out</span>
       <span class="chip-label chip-label--power">LUXONNICore · &lt;1 W</span>
     </div>
@@ -325,8 +327,8 @@
   <script src="assets/metrics.js"></script>
   <script src="assets/reveal.js"></script>
   <script src="assets/intro.js"></script>
-  <script src="assets/waves3d.js"></script>
-  <script src="assets/lux3d.js"></script>
-  <script src="assets/power3d.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@5.0.1/bundled/locomotive-scroll.min.js"></script>
+  <script src="assets/scroll.js"></script>
+  <script src="assets/world3d.js"></script>
 </body>
 </html>
