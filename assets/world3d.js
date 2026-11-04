@@ -1,13 +1,16 @@
 /*
  * world3d.js — the whole landing page as one 3D world.
  *
- * One fixed WebGL canvas sits behind the page. The light field runs through the
- * whole document in depth, and the two 3D stations (the power wall and the
- * LUXONNICore signal) sit in that same world at the height of their section.
- * The camera rides the scroll position, so the scene, the stations and the
- * animation move together. Scrolling fast adds energy: the light speeds up and
- * the camera rolls a little. A station lights up as it reaches the centre of
- * the screen.
+ * One fixed WebGL canvas sits behind the page. A light field runs through the
+ * whole document in depth. Two stations sit in that world at the height of
+ * their section: the power wall (an open rack, a bare transceiver and stacked
+ * light rings) and the LUXONNICore signal (a lattice with the waveform running
+ * through it). Both are modelled in Blender (models/build_stations.py) and
+ * embedded in assets/stations-models.js, so this works from disk too.
+ *
+ * Interaction: the stations grow and shrink with the scroll (a station grows as
+ * it reaches the centre of the screen), and the part under the pointer swells.
+ * Scrolling fast adds energy: the light speeds up and the camera rolls a little.
  *
  * Classic script with dynamic import() so it also runs from file://.
  * If it cannot start, the canvas stays hidden and the 2D fallback in
@@ -30,7 +33,7 @@
     import("three/addons/lines/LineGeometry.js"),
     import("three/addons/lines/LineMaterial.js"),
     import("three/addons/lines/Line2.js"),
-    import("three/addons/geometries/RoundedBoxGeometry.js"),
+    import("three/addons/loaders/GLTFLoader.js"),
   ])
     .then(function (m) {
       start({
@@ -43,7 +46,7 @@
         LineGeometry: m[6].LineGeometry,
         LineMaterial: m[7].LineMaterial,
         Line2: m[8].Line2,
-        RoundedBoxGeometry: m[9].RoundedBoxGeometry,
+        GLTFLoader: m[9].GLTFLoader,
       });
     })
     .catch(function (err) {
@@ -59,7 +62,7 @@
   var IRIS = [0.48, 0.44, 1.0];
 
   /* ------------------------------------------------------------------ */
-  /* shaders                                                             */
+  /* shaders for the light field                                         */
   /* ------------------------------------------------------------------ */
 
   var WAVE_GLSL = [
@@ -96,35 +99,6 @@
     "}",
   ].join("\n");
 
-  var BAND_VS = [
-    "varying vec2 vUv;",
-    "void main() {",
-    "  vUv = uv;",
-    "  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);",
-    "}",
-  ].join("\n");
-
-  var BAND_FS = [
-    "uniform float uTime;",
-    "uniform float uSpeed;",
-    "uniform float uDisp;",
-    "uniform float uPhase;",
-    "uniform float uBright;",
-    "uniform vec3 uPhoton;",
-    "uniform vec3 uEmber;",
-    "varying vec2 vUv;",
-    "void main() {",
-    "  float u = vUv.x;",
-    "  float p = fract(u * 1.6 - uTime * uSpeed + uPhase);",
-    "  p += uDisp * 0.06 * sin(u * 60.0 + uTime * 10.0 + uPhase * 9.0);",
-    "  p = fract(p);",
-    "  float tail = mix(10.0, 3.5, uDisp);",
-    "  float I = exp(-p * tail) + uDisp * 0.5 * exp(-fract(p + 0.4) * tail * 0.7);",
-    "  vec3 col = mix(uPhoton, uEmber, uDisp);",
-    "  gl_FragColor = vec4(vec3(0.07, 0.07, 0.12) + col * I * uBright, 1.0);",
-    "}",
-  ].join("\n");
-
   /* ------------------------------------------------------------------ */
 
   function start(D) {
@@ -147,21 +121,23 @@
 
     var pmrem = new T.PMREMGenerator(renderer);
     scene.environment = pmrem.fromScene(new D.RoomEnvironment(), 0.04).texture;
-    scene.environmentIntensity = 0.5;
+    scene.environmentIntensity = 0.55;
 
     var camera = new T.PerspectiveCamera(30, 1, 0.1, 400);
 
-    var key = new T.DirectionalLight(0xffffff, 1.2);
+    var key = new T.DirectionalLight(0xffffff, 1.4);
     key.position.set(3, 6, 6);
     scene.add(key);
-    var irisLight = new T.PointLight(new T.Color(IRIS[0], IRIS[1], IRIS[2]).getHex(), 8, 40, 2);
-    irisLight.position.set(-6, 4, -6);
-    scene.add(irisLight);
+    var rim = new T.DirectionalLight(new T.Color(IRIS[0], IRIS[1], IRIS[2]), 0.8);
+    rim.position.set(-6, 3, -4);
+    scene.add(rim);
 
-    var colPhoton = new T.Color(PHOTON[0], PHOTON[1], PHOTON[2]);
-    var colEmber = new T.Color(EMBER[0], EMBER[1], EMBER[2]);
-    var colIris = new T.Color(IRIS[0], IRIS[1], IRIS[2]);
-    var glowTex = makeGlow(T);
+    var palette = {
+      photon: new T.Color(PHOTON[0], PHOTON[1], PHOTON[2]),
+      ember: new T.Color(EMBER[0], EMBER[1], EMBER[2]),
+      iris: new T.Color(IRIS[0], IRIS[1], IRIS[2]),
+      glow: makeGlow(T),
+    };
 
     /* ---------------- the light field: strands through the whole page ---- */
 
@@ -181,17 +157,11 @@
       var zb = -24 + fz * 16 + Math.sin(i * 1.7) * 1.2;
       var pts = [];
       for (var x = -18; x <= 18; x += 1.5) {
-        pts.push(
-          new T.Vector3(
-            x,
-            yb + Math.sin(x * 0.18 + i * 0.37) * 1.1,
-            zb + Math.cos(x * 0.12 + i * 0.21) * 1.6
-          )
-        );
+        pts.push(new T.Vector3(x, yb + Math.sin(x * 0.18 + i * 0.37) * 1.1, zb + Math.cos(x * 0.12 + i * 0.21) * 1.6));
       }
       var curve = new T.CatmullRomCurve3(pts, false, "centripetal");
       var depthT = Math.max(0, Math.min(1, (zb + 24) / 16));
-      var color = new T.Color(IRIS[0], IRIS[1], IRIS[2]).lerp(colPhoton, (i % 5) / 5);
+      var color = palette.iris.clone().lerp(palette.photon, (i % 5) / 5);
       var mat = new T.ShaderMaterial({
         vertexShader: STRAND_VS,
         fragmentShader: STRAND_FS,
@@ -206,15 +176,14 @@
         depthWrite: false,
         blending: T.AdditiveBlending,
       });
-      var tube = new T.Mesh(new T.TubeGeometry(curve, 240, 0.007 + 0.016 * depthT, 6, false), mat);
-      strandGroup.add(tube);
+      strandGroup.add(new T.Mesh(new T.TubeGeometry(curve, 240, 0.007 + 0.016 * depthT, 6, false), mat));
       strands.push({ mat: mat, phase: i * 0.61, curve: curve });
 
       if (i % 3 === 0) {
         var s = new T.Sprite(
           new T.SpriteMaterial({
-            map: glowTex,
-            color: colPhoton.clone().multiplyScalar(2.4),
+            map: palette.glow,
+            color: palette.photon.clone().multiplyScalar(2.4),
             transparent: true,
             depthWrite: false,
             blending: T.AdditiveBlending,
@@ -227,7 +196,6 @@
       }
     }
 
-    // a few hundred specks of dust so the depth reads even between strands
     var dustN = LOW_POWER ? 160 : 360;
     var dustPos = new Float32Array(dustN * 3);
     for (var d = 0; d < dustN; d++) {
@@ -239,23 +207,6 @@
     dustGeo.setAttribute("position", new T.BufferAttribute(dustPos, 3));
     scene.add(new T.Points(dustGeo, new T.PointsMaterial({ color: 0x9a9790, size: 0.03, transparent: true, opacity: 0.45, depthWrite: false })));
 
-    /* ---------------- station 1: the power wall -------------------------- */
-
-    var power = buildPower(T, D, glowTex, colPhoton, colEmber, colIris);
-    scene.add(power.group);
-
-    /* ---------------- station 2: the LUXONNICore signal ----------------- */
-
-    var signal = buildSignal(T, D, colPhoton, colEmber, colIris);
-    scene.add(signal.group);
-
-    var stations = [
-      { el: document.querySelector("[data-station='power']"), group: power.group, bw: 8.4, bh: 2.9, api: power, docCY: 0 },
-      { el: document.querySelector("[data-station='signal']"), group: signal.group, bw: 9.8, bh: 3.2, api: signal, docCY: 0 },
-    ].filter(function (st) {
-      return st.el;
-    });
-
     /* ---------------- post ----------------------------------------------- */
 
     var size = new T.Vector2();
@@ -266,7 +217,41 @@
     composer.addPass(bloom);
     composer.addPass(new D.OutputPass());
 
-    var lineMats = [signal.lineMat, signal.baseMat];
+    /* ---------------- stations: loaded from the Blender exports ---------- */
+
+    var stations = [];
+    var lineMats = [];
+    var hoverRay = new T.Raycaster();
+    var pointer = { x: 0, y: 0, sx: 0, sy: 0, inside: false };
+
+    var loads = [
+      loadStation(D, "power").then(function (group) {
+        var api = buildPowerStation(T, group, palette);
+        return { key: "power", el: document.querySelector("[data-station='power']"), group: group, api: api };
+      }),
+      loadStation(D, "signal").then(function (group) {
+        var api = buildSignalStation(T, D, group, palette);
+        lineMats.push(api.lineMat, api.baseMat);
+        return { key: "signal", el: document.querySelector("[data-station='signal']"), group: group, api: api };
+      }),
+    ];
+
+    Promise.all(loads)
+      .then(function (list) {
+        list.forEach(function (st) {
+          if (!st.el) return;
+          scene.add(st.group);
+          var sz = new T.Box3().setFromObject(st.group).getSize(new T.Vector3());
+          st.bw = Math.max(0.5, sz.x);
+          st.bh = Math.max(0.5, sz.y);
+          st.docCY = 0;
+          stations.push(st);
+        });
+        layout();
+      })
+      .catch(function (err) {
+        console.warn("world3d: stations unavailable", err);
+      });
 
     /* ---------------- layout: stations follow their sections ------------- */
 
@@ -281,9 +266,7 @@
       lineMats.forEach(function (m) {
         m.resolution.set(size.x, size.y);
       });
-      // the camera keeps 1 unit = 200 px at the station plane
-      var dist = vh * K / 2 / Math.tan(T.MathUtils.degToRad(15));
-      camera.position.z = dist;
+      camera.position.z = (vh * K) / 2 / Math.tan(T.MathUtils.degToRad(15));
       camera.aspect = vw / vh;
       camera.updateProjectionMatrix();
 
@@ -291,7 +274,7 @@
         var r = st.el.getBoundingClientRect();
         var cx = r.left + r.width / 2;
         var cy = r.top + window.scrollY + r.height / 2;
-        var fit = Math.min((r.width * 0.9) / (st.bw * 200), (r.height * 0.9) / (st.bh * 200));
+        var fit = Math.min((r.width * 0.92) / (st.bw * 200), (r.height * 0.92) / (st.bh * 200));
         st.group.scale.setScalar(fit);
         st.group.position.set((cx - vw / 2) * K, -cy * K, 0);
         st.docCY = cy;
@@ -306,19 +289,19 @@
     window.addEventListener("load", layout);
     layout();
 
-    /* ---------------- the scroll-driven frame ---------------------------- */
-
-    var pointer = { x: 0, y: 0, sx: 0, sy: 0 };
     if (!REDUCED) {
       window.addEventListener(
         "pointermove",
         function (e) {
           pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
-          pointer.y = (e.clientY / window.innerHeight) * 2 - 1;
+          pointer.y = -((e.clientY / window.innerHeight) * 2 - 1); // NDC, y up
+          pointer.inside = true;
         },
         { passive: true }
       );
     }
+
+    /* ---------------- the scroll-driven frame ---------------------------- */
 
     var cur = window.scrollY;
     var prevCur = cur;
@@ -334,7 +317,20 @@
       return p;
     }
 
-    function render(dt, now) {
+    function hoveredPart() {
+      if (!pointer.inside || !stations.length) return null;
+      hoverRay.setFromCamera({ x: pointer.sx, y: pointer.sy }, camera);
+      var meshes = [];
+      stations.forEach(function (st) {
+        st.group.traverse(function (o) {
+          if (o.isMesh && o.userData.part) meshes.push(o);
+        });
+      });
+      var hit = hoverRay.intersectObjects(meshes, false)[0];
+      return hit ? { station: hit.object.userData.station, part: hit.object.userData.part } : null;
+    }
+
+    function render(dt) {
       var vh = window.innerHeight;
       cur += (window.scrollY - cur) * (1 - Math.exp(-dt * 9));
       var v = dt > 0 ? (cur - prevCur) / dt : 0;
@@ -343,8 +339,8 @@
       var energy = Math.min(1, Math.abs(vel) / 2500);
       clock += dt * (1 + 2.2 * energy);
 
-      pointer.sx += (pointer.x - pointer.sx) * Math.min(1, dt * 2.5);
-      pointer.sy += (pointer.y - pointer.sy) * Math.min(1, dt * 2.5);
+      pointer.sx += (pointer.x - pointer.sx) * Math.min(1, dt * 6);
+      pointer.sy += (pointer.y - pointer.sy) * Math.min(1, dt * 6);
 
       var camY = -(cur + vh / 2) * K;
       var roll = Math.max(-0.05, Math.min(0.05, vel * 0.000012));
@@ -364,9 +360,11 @@
         p.sprite.material.opacity = Math.max(0, 1 - Math.min(1, Math.abs(tmp.x) / 17));
       });
 
+      var hot = hoveredPart();
       stations.forEach(function (st) {
         var focus = 1 - Math.min(1, Math.abs(st.docCY - (cur + vh / 2)) / (vh * 0.8));
-        st.api.update(clock, Math.max(0, focus), energy);
+        var part = hot && hot.station === st.key ? hot.part : null;
+        st.api.update(dt, clock, Math.max(0, focus), energy, part);
       });
 
       composer.render();
@@ -376,15 +374,19 @@
       raf = null;
       var dt = Math.max(0, Math.min((now - last) / 1000, 0.05));
       last = now;
-      render(dt, now);
+      render(dt);
       if (!REDUCED) raf = requestAnimationFrame(frame);
     }
 
     if (REDUCED) {
-      render(0, 0);
-      window.addEventListener("scroll", function () {
-        render(0, 0);
-      }, { passive: true });
+      render(0);
+      window.addEventListener(
+        "scroll",
+        function () {
+          render(0);
+        },
+        { passive: true }
+      );
     } else {
       raf = requestAnimationFrame(frame);
     }
@@ -399,143 +401,135 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* the stations, in their own local space (centred on the origin)      */
+  /* models                                                              */
   /* ------------------------------------------------------------------ */
 
-  function buildPower(T, D, glowTex, colPhoton, colEmber, colIris) {
-    var group = new T.Group();
-    var rackX = -3.5;
-    var xcvrX = -0.8;
-    var barsX = [1.9, 2.8, 3.7];
-    var barsH = [1.0, 1.6, 2.4];
-
-    var rack = new T.Mesh(
-      new T.BoxGeometry(1.5, 2.9, 1.1),
-      new T.MeshStandardMaterial({ color: 0x14161e, metalness: 0.6, roughness: 0.35 })
-    );
-    rack.position.set(rackX, 0, 0);
-    group.add(rack);
-
-    var slots = [];
-    var slotGeo = new T.BoxGeometry(1.2, 0.07, 0.04);
-    for (var s = 0; s < 9; s++) {
-      var sm = new T.MeshStandardMaterial({
-        color: 0x111318,
-        emissive: s % 3 === 0 ? colEmber.clone() : colIris.clone(),
-        emissiveIntensity: 0.4,
-      });
-      var slot = new T.Mesh(slotGeo, sm);
-      slot.position.set(rackX, -1.2 + s * 0.3, 0.57);
-      group.add(slot);
-      slots.push({ mat: sm, seed: s * 1.73 });
-    }
-
-    var xcvr = new T.Mesh(
-      new T.BoxGeometry(0.95, 0.42, 0.6),
-      new T.MeshStandardMaterial({ color: 0x1b1e28, metalness: 0.8, roughness: 0.25 })
-    );
-    xcvr.position.set(xcvrX, 0, 0);
-    group.add(xcvr);
-
-    var dspMat = new T.MeshStandardMaterial({ color: 0x20110c, emissive: colEmber.clone(), emissiveIntensity: 1.2, roughness: 0.5 });
-    var dsp = new T.Mesh(new T.BoxGeometry(0.34, 0.07, 0.34), dspMat);
-    dsp.position.set(xcvrX, 0.245, 0);
-    group.add(dsp);
-
-    var heatMat = new T.SpriteMaterial({
-      map: glowTex,
-      color: colEmber.clone(),
-      transparent: true,
-      opacity: 0.4,
-      depthWrite: false,
-      blending: T.AdditiveBlending,
-    });
-    var heat = new T.Sprite(heatMat);
-    heat.position.set(xcvrX, 0.3, 0);
-    heat.scale.setScalar(0.9);
-    group.add(heat);
-
-    var bands = [];
-    function addBand(curve, disp, phase, radius) {
-      var mat = new T.ShaderMaterial({
-        vertexShader: BAND_VS,
-        fragmentShader: BAND_FS,
-        uniforms: {
-          uTime: { value: 0 },
-          uSpeed: { value: 0.3 },
-          uDisp: { value: disp },
-          uPhase: { value: phase },
-          uBright: { value: 1.5 },
-          uPhoton: { value: new T.Vector3(PHOTON[0], PHOTON[1], PHOTON[2]) },
-          uEmber: { value: new T.Vector3(EMBER[0], EMBER[1], EMBER[2]) },
+  function loadStation(D, key) {
+    return new Promise(function (resolve, reject) {
+      var data = window.LUX_STATIONS && window.LUX_STATIONS[key];
+      if (!data) return reject(new Error("missing model: " + key));
+      var bin = atob(data);
+      var bytes = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      new D.GLTFLoader().parse(
+        bytes.buffer,
+        "",
+        function (gltf) {
+          resolve(gltf.scene);
         },
-      });
-      group.add(new T.Mesh(new T.TubeGeometry(curve, 60, radius, 8, false), mat));
-      bands.push(mat);
-    }
-    addBand(
-      new T.CatmullRomCurve3([new T.Vector3(rackX + 0.8, 0, 0), new T.Vector3(-2.1, 0.12, 0), new T.Vector3(xcvrX - 0.5, 0, 0)]),
-      1.0,
-      0.0,
-      0.035
-    );
-    barsX.forEach(function (bx, i) {
-      var curve = new T.CatmullRomCurve3([
-        new T.Vector3(xcvrX + 0.5, 0, 0),
-        new T.Vector3((xcvrX + bx) / 2, 0.5 + i * 0.12, -0.5 + i * 0.5),
-        new T.Vector3(bx, -1.1 + barsH[i] * 0.5, 0),
-      ]);
-      addBand(curve, 0.0, i * 0.37, 0.022);
+        reject
+      );
+    });
+  }
+
+  // Each exported material is re-created as a lit or glowing material.
+  // Parts are tagged so the pointer can find them.
+  function skin(T, group, palette, station) {
+    group.traverse(function (o) {
+      if (!o.isMesh) return;
+      var base = o.material && o.material.name ? o.material.name : "";
+      o.userData.station = station;
+      o.userData.part = o.name;
+      if (base === "Metal") {
+        o.material = new T.MeshPhysicalMaterial({ color: 0x1b1e27, metalness: 0.85, roughness: 0.28, clearcoat: 0.7, clearcoatRoughness: 0.2 });
+      } else if (base === "PCB") {
+        o.material = new T.MeshPhysicalMaterial({ color: 0x07120f, metalness: 0, roughness: 0.5, clearcoat: 0.3 });
+      } else if (base === "Chip") {
+        o.material = new T.MeshStandardMaterial({ color: 0x1a0c07, metalness: 0.5, roughness: 0.35, emissive: palette.ember.clone(), emissiveIntensity: 1.2 });
+        o.userData.dsp = o.material;
+      } else {
+        var col = base === "Iris" ? palette.iris : base === "Photon" ? palette.photon : palette.ember;
+        o.material = new T.MeshBasicMaterial({ color: col.clone(), toneMapped: false });
+        o.userData.base = col.clone();
+      }
+    });
+  }
+
+  function buildPowerStation(T, group, palette) {
+    skin(T, group, palette, "power");
+
+    var shelves = [];
+    var dsp = null;
+    var rings = [[], [], []];
+    var caps = [null, null, null];
+
+    group.traverse(function (o) {
+      if (!o.isMesh) return;
+      if (o.userData.dsp) dsp = o.userData.dsp;
+      var strip = /^Strip_(\d)$/.exec(o.name);
+      if (strip) shelves.push({ mat: o.material, seed: Number(strip[1]) * 1.73, base: o.material.color.clone() });
+      var ring = /^Bar(\d)_Seg(\d+)$/.exec(o.name);
+      if (ring) {
+        // each ring gets its own material so it can glow on its own
+        o.material = o.material.clone();
+        rings[Number(ring[1])].push({ obj: o, mat: o.material, cur: 0, rest: o.position.y, base: o.userData.base.clone() });
+      }
+      var cap = /^Bar(\d)_Cap$/.exec(o.name);
+      if (cap) caps[Number(cap[1])] = o;
     });
 
-    var bars = [];
-    barsX.forEach(function (bx, i) {
-      var mat = new T.MeshStandardMaterial({
-        color: 0x1a0e0a,
-        emissive: colEmber.clone(),
-        emissiveIntensity: 0.25 + i * 0.2,
-        roughness: 0.4,
-        metalness: 0.3,
+    var bars = [0, 1, 2].map(function (b) {
+      var list = rings[b].sort(function (a, c) {
+        return a.rest - c.rest;
       });
-      var bar = new T.Mesh(new T.BoxGeometry(0.52, barsH[i], 0.52), mat);
-      bar.position.set(bx, -1.45 + barsH[i] / 2, 0);
-      group.add(bar);
-      var cap = new T.Mesh(
-        new T.SphereGeometry(0.1, 16, 12),
-        new T.MeshBasicMaterial({ color: colPhoton.clone(), toneMapped: false })
-      );
-      cap.position.set(bx, -1.45 + barsH[i] + 0.1, 0);
-      group.add(cap);
-      bars.push({ mesh: bar, mat: mat, cap: cap, base: barsH[i], i: i });
+      return { index: b, rings: list, cap: caps[b], grow: 0, hover: 0 };
     });
 
     return {
-      group: group,
-      update: function (clock, focus, energy) {
-        slots.forEach(function (sl) {
+      update: function (dt, clock, focus, energy, part) {
+        var k = 1 - Math.exp(-dt * 10);
+
+        shelves.forEach(function (sl) {
           var on = 0.5 + 0.5 * Math.sin(clock * 2.4 + sl.seed);
-          sl.mat.emissiveIntensity = (0.15 + 1.1 * on * on) * (0.45 + 0.7 * focus);
+          sl.mat.color.copy(sl.base).multiplyScalar((0.2 + 1.1 * on * on) * (0.45 + 0.8 * focus));
         });
-        var heatBeat = 0.5 + 0.5 * Math.sin(clock * 1.6);
-        dspMat.emissiveIntensity = (0.9 + 1.4 * heatBeat) * (0.5 + 0.6 * focus);
-        heatMat.opacity = 0.25 + 0.35 * heatBeat;
-        heat.scale.setScalar(0.8 + 0.3 * heatBeat);
-        bands.forEach(function (b) {
-          b.uniforms.uTime.value = clock;
-        });
-        bars.forEach(function (b) {
-          var grow = 0.82 + 0.18 * (0.5 + 0.5 * Math.sin(clock * 0.7 - b.i * 0.6 + energy * 2));
-          b.mesh.scale.y = grow;
-          b.mesh.position.y = -1.45 + (b.base * grow) / 2;
-          b.cap.position.y = -1.45 + b.base * grow + 0.1;
-          b.mat.emissiveIntensity = (0.25 + b.i * 0.2 + 0.4 * heatBeat) * (0.5 + 0.6 * focus);
+
+        if (dsp) dsp.emissiveIntensity = (0.9 + 1.4 * (0.5 + 0.5 * Math.sin(clock * 1.6))) * (0.5 + 0.7 * focus);
+
+        bars.forEach(function (bar) {
+          var m = part && /^Bar(\d)_/.exec(part);
+          var hovered = !!m && Number(m[1]) === bar.index;
+          bar.hover += ((hovered ? 0.22 : 0) - bar.hover) * k;
+          bar.grow += (0.35 + 0.65 * focus + bar.hover - bar.grow) * k;
+          var n = bar.rings.length * Math.min(1.3, Math.max(0, bar.grow));
+
+          bar.rings.forEach(function (r, idx) {
+            var target = smooth(Math.min(1, Math.max(0, n - idx)));
+            r.cur += (target - r.cur) * k;
+            var sc = Math.max(0.0001, r.cur);
+            r.obj.scale.set(sc, sc, sc);
+            var wave = 0.5 + 0.5 * Math.sin(clock * 3 - idx * 0.45 + bar.index * 0.9);
+            r.mat.color.copy(r.base).multiplyScalar((0.55 + 0.9 * wave) * (0.5 + 0.8 * focus));
+          });
+
+          if (bar.cap && bar.rings.length > 1) {
+            var pitch = bar.rings[1].rest - bar.rings[0].rest;
+            bar.cap.position.y = bar.rings[0].rest + n * pitch;
+            var cs = Math.max(0.0001, Math.min(1, bar.grow));
+            bar.cap.scale.set(cs, cs, cs);
+          }
         });
       },
     };
   }
 
-  function buildSignal(T, D, colPhoton, colEmber, colIris) {
-    var group = new T.Group();
+  function buildSignalStation(T, D, group, palette) {
+    skin(T, group, palette, "signal");
+
+    var nodes = [];
+    var edges = [];
+    group.traverse(function (o) {
+      if (!o.isMesh) return;
+      if (/^Node_/.test(o.name)) {
+        o.material = o.material.clone();
+        nodes.push({ obj: o, mat: o.material, idx: nodes.length, s: 1 });
+      } else if (/^Edge_/.test(o.name)) {
+        o.material = o.material.clone();
+        edges.push(o.material);
+      }
+    });
+
+    // The waveform running through the lattice is the signal itself.
     var SAMPLES = 220;
     var X0 = -4.8;
     var X1 = 4.8;
@@ -557,52 +551,16 @@
       return (1 - s) * distorted * amp + s * clean;
     }
 
-    var core = new T.Mesh(
-      new D.RoundedBoxGeometry(CORE_W, 1.7, 1.5, 3, 0.1),
-      new T.MeshPhysicalMaterial({
-        color: 0x1a1d2a,
-        roughness: 0.05,
-        transparent: true,
-        opacity: 0.32,
-        depthWrite: false,
-        clearcoat: 1,
-        clearcoatRoughness: 0.04,
-        ior: 1.5,
-      })
-    );
-    core.renderOrder = 2;
-    group.add(core);
-
-    var nodeMat = new T.MeshBasicMaterial({ color: colPhoton.clone(), toneMapped: false });
-    var nodes = [];
-    var nodeGeo = new T.SphereGeometry(0.05, 14, 10);
-    for (var ix = 0; ix < 5; ix++) {
-      for (var iy = 0; iy < 3; iy++) {
-        var node = new T.Mesh(nodeGeo, nodeMat);
-        node.position.set(-0.9 + ix * 0.45, -0.4 + iy * 0.4, 0);
-        group.add(node);
-        nodes.push(node);
-      }
-    }
-
-    var lineMat = new D.LineMaterial({
-      linewidth: 1.6,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.95,
-      depthWrite: false,
-      blending: T.AdditiveBlending,
-    });
+    var lineMat = new D.LineMaterial({ linewidth: 1.6, vertexColors: true, transparent: true, opacity: 0.95, depthWrite: false, blending: T.AdditiveBlending });
+    var baseMat = new D.LineMaterial({ linewidth: 1, color: palette.iris.getHex(), transparent: true, opacity: 0.25, depthWrite: false });
     var traces = [];
     for (var k = 0; k < TRACES; k++) {
       var geo = new D.LineGeometry();
       group.add(new D.Line2(geo, lineMat));
       traces.push({ geo: geo, seed: (k / TRACES) * Math.PI * 2, z: -1.1 + (2.2 * k) / (TRACES - 1), amp: 0.8 + 0.3 * Math.sin(k * 1.9) });
     }
-
     var baseGeo = new D.LineGeometry();
     baseGeo.setPositions([X0, 0, 0, X1, 0, 0]);
-    var baseMat = new D.LineMaterial({ linewidth: 1, color: colIris.getHex(), transparent: true, opacity: 0.25, depthWrite: false });
     group.add(new D.Line2(baseGeo, baseMat));
 
     var positions = new Float32Array(SAMPLES * 3);
@@ -611,7 +569,7 @@
     for (var si = 0; si < SAMPLES; si++) {
       var xs = X0 + ((X1 - X0) * si) / (SAMPLES - 1);
       var s2 = smoothstep(-CORE_W * 0.7, CORE_W * 0.7, xs);
-      tmpC.copy(colEmber).lerp(colPhoton, s2);
+      tmpC.copy(palette.ember).lerp(palette.photon, s2);
       var br = 0.42 + 0.3 * s2;
       colors[si * 3] = tmpC.r * br;
       colors[si * 3 + 1] = tmpC.g * br;
@@ -619,10 +577,10 @@
     }
 
     return {
-      group: group,
       lineMat: lineMat,
       baseMat: baseMat,
-      update: function (clock, focus) {
+      update: function (dt, clock, focus, energy, part) {
+        var k2 = 1 - Math.exp(-dt * 10);
         traces.forEach(function (tr) {
           for (var i = 0; i < SAMPLES; i++) {
             var x = X0 + ((X1 - X0) * i) / (SAMPLES - 1);
@@ -634,15 +592,25 @@
           tr.geo.setPositions(positions);
           tr.geo.setColors(colors);
         });
-        var beat = 0.5 + 0.5 * Math.sin(clock * 2.2);
-        nodeMat.color.copy(colPhoton).multiplyScalar((0.8 + 0.9 * beat) * (0.5 + 0.7 * focus));
-        nodes.forEach(function (n, idx) {
-          var flash = 0.5 + 0.5 * Math.sin(clock * 3 - idx * 0.5);
-          n.scale.setScalar(0.8 + 0.4 * flash);
-        });
         lineMat.opacity = 0.45 + 0.5 * focus;
+
+        nodes.forEach(function (n) {
+          var flash = 0.5 + 0.5 * Math.sin(clock * 3 - (n.idx % 5) * 0.5 - Math.floor(n.idx / 5) * 0.7);
+          var hovered = part === n.obj.name;
+          var target = (0.8 + 0.35 * flash) * (0.5 + 0.7 * focus) * (hovered ? 1.9 : 1);
+          n.s += (target - n.s) * k2;
+          n.obj.scale.setScalar(Math.max(0.0001, n.s));
+          n.mat.color.copy(palette.photon).multiplyScalar((0.5 + 0.9 * flash) * (0.45 + 0.8 * focus) * (hovered ? 1.6 : 1));
+        });
+        edges.forEach(function (m) {
+          m.color.copy(palette.iris).multiplyScalar(0.25 + 0.9 * focus);
+        });
       },
     };
+  }
+
+  function smooth(t) {
+    return t * t * (3 - 2 * t);
   }
 
   function makeGlow(T) {
