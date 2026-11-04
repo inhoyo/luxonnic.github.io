@@ -9,9 +9,19 @@
   var PHOTON = "200, 245, 255";
   var IRIS = "123, 111, 255";
 
-  mounts.forEach(function (mount) {
-    initFiber(mount);
-  });
+  // Wait for DOMContentLoaded: the 3D waves (waves3d.js, a module) run before it,
+  // and mark their mount with data-gl="on" so this flat version stays out of the way.
+  function start() {
+    mounts.forEach(function (mount) {
+      if (mount.dataset.gl === "on") return;
+      initFiber(mount);
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start);
+  } else {
+    start();
+  }
 
   function initFiber(mount) {
     var canvas = document.createElement("canvas");

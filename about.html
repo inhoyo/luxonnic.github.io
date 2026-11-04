@@ -19,6 +19,16 @@
     rel="stylesheet"
   />
 
+  <!-- Three.js for the 3D light fields (pinned version, jsDelivr only) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
@@ -67,50 +77,59 @@
     </div>
     <div class="team-grid">
       <div class="member reveal" role="button" tabindex="0" data-photo="assets/team-inho.jpg">
-        <h3 class="member-name">In-Ho Baek</h3>
-        <p class="member-role">Co-Founder · CEO</p>
-        <p class="member-bio">
-          Dr.-Ing. cand., TU Berlin (submitted June 2026) · KIT &amp; KAIST Alumnus ·
-          Baden-Württemberg Scholar · Lecturer Since 2022 · Best Student
-          Paper Award, OECC 2026
-        </p>
-        <span class="member-more">View Profile →</span>
-        <div class="member-detail" hidden>
-          Scientist at Fraunhofer HHI in the Photonic Networks &amp; Systems
-          department, formerly specializing in THz wireless communications,
-          probabilistic constellation shaping, and real-time DSP. Holds a
-          world record in 300 GHz dual-polarization THz transmission —
-          221.5 Gb/s over 500 m — the longest-range, highest-capacity
-          THz link demonstrated at this frequency band. Dr.-Ing. submitted at TU Berlin in June 2026, Alumnus of KIT (Karlsruhe) and KAIST, Baden-Württemberg
-          Scholar, lecturer at Berlin Universities since 2022, and winner of the Best
-          Student Paper Award at OECC 2026 (Busan). Invited speaker at
-          Seoul National University (June 2026). Active in Korean–German
-          R&amp;D partnership strategy spanning TIPA, Horizon Europe, and
-          bilateral instruments.
+        <div class="member-photo"><img src="assets/team-inho.jpg" alt="" loading="lazy" /></div>
+        <div class="member-body">
+          <h3 class="member-name">In-Ho Baek</h3>
+          <p class="member-role">Co-Founder · CEO</p>
+          <p class="member-bio">
+            Dr.-Ing. cand., TU Berlin (submitted June 2026) · KIT &amp; KAIST Alumnus ·
+            Baden-Württemberg Scholar · Lecturer Since 2022 · Best Student
+            Paper Award, OECC 2026
+          </p>
+          <span class="member-more">View Profile →</span>
+          <div class="member-detail" hidden>
+            Scientist at Fraunhofer HHI in the Photonic Networks &amp; Systems
+            department, formerly specializing in THz wireless communications,
+            probabilistic constellation shaping, and real-time DSP. Holds a
+            world record in 300 GHz dual-polarization THz transmission —
+            221.5 Gb/s over 500 m — the longest-range, highest-capacity
+            THz link demonstrated at this frequency band. Dr.-Ing. submitted at TU Berlin in June 2026, Alumnus of KIT (Karlsruhe) and KAIST, Baden-Württemberg
+            Scholar, lecturer at Berlin Universities since 2022, and winner of the Best
+            Student Paper Award at OECC 2026 (Busan). Invited speaker at
+            Seoul National University (June 2026). Active in Korean–German
+            R&amp;D partnership strategy spanning TIPA, Horizon Europe, and
+            bilateral instruments.
+          </div>
         </div>
       </div>
       <div class="member reveal" role="button" tabindex="0" data-photo="assets/team-mahdi.jpg">
-        <h3 class="member-name">Mahdi Kaveh</h3>
-        <p class="member-role">Co-Founder · CTO</p>
-        <p class="member-bio">
-          Dual M.Sc., K. N. Toosi University &amp; BHT Berlin · 9+ Years in
-          Wireless Telecom · Fraunhofer HHI Researcher · Neuromorphic
-          Computing &amp; ML
-        </p>
-        <span class="member-more">View Profile →</span>
-        <div class="member-detail" hidden>
-          Research Associate in neuromorphic photonics at Fraunhofer HHI. His research focuses on photonic neural networks and reservoir computing with PICs for optical signal processing. Co-author on relevant publications in demonstrations of photonic reservoir computing for signal processing. Active contributor to national and international projects. Holds dual M.Sc. degrees in Electronic Engineering from K. N. Toosi University of Technology (Tehran) and BHT Berlin.
+        <div class="member-photo"><img src="assets/team-mahdi.jpg" alt="" loading="lazy" /></div>
+        <div class="member-body">
+          <h3 class="member-name">Mahdi Kaveh</h3>
+          <p class="member-role">Co-Founder · CTO</p>
+          <p class="member-bio">
+            Dual M.Sc., K. N. Toosi University &amp; BHT Berlin · 9+ Years in
+            Wireless Telecom · Fraunhofer HHI Researcher · Neuromorphic
+            Computing &amp; ML
+          </p>
+          <span class="member-more">View Profile →</span>
+          <div class="member-detail" hidden>
+            Research Associate in neuromorphic photonics at Fraunhofer HHI. His research focuses on photonic neural networks and reservoir computing with PICs for optical signal processing. Co-author on relevant publications in demonstrations of photonic reservoir computing for signal processing. Active contributor to national and international projects. Holds dual M.Sc. degrees in Electronic Engineering from K. N. Toosi University of Technology (Tehran) and BHT Berlin.
+          </div>
         </div>
       </div>
       <div class="member reveal" role="button" tabindex="0">
-        <h3 class="member-name">Stealth</h3>
-        <p class="member-role">Co-Founder · CCO</p>
-        <p class="member-bio">
-          Third founding team member · Details to be announced
-        </p>
-        <span class="member-more">View Profile →</span>
-        <div class="member-detail" hidden>
-          Operating in stealth mode for now. Full bio coming soon.
+        <div class="member-photo member-photo--pending" aria-hidden="true"></div>
+        <div class="member-body">
+          <h3 class="member-name">Stealth</h3>
+          <p class="member-role">Co-Founder · CCO</p>
+          <p class="member-bio">
+            Third founding team member · Details to be announced
+          </p>
+          <span class="member-more">View Profile →</span>
+          <div class="member-detail" hidden>
+            Operating in stealth mode for now. Full bio coming soon.
+          </div>
         </div>
       </div>
     </div>
@@ -123,39 +142,48 @@
     </div>
     <div class="team-grid">
       <div class="member reveal" role="button" tabindex="0">
-        <h3 class="member-name">Stealth</h3>
-        <p class="member-role">Lead Photonic Design Engineer</p>
-        <p class="member-bio">Joining the team · Details to be announced</p>
-        <span class="member-more">View Profile →</span>
-        <div class="member-detail" hidden>
-          Operating in stealth mode for now. Full bio coming soon.
+        <div class="member-photo member-photo--pending" aria-hidden="true"></div>
+        <div class="member-body">
+          <h3 class="member-name">Stealth</h3>
+          <p class="member-role">Lead Photonic Design Engineer</p>
+          <p class="member-bio">Joining the team · Details to be announced</p>
+          <span class="member-more">View Profile →</span>
+          <div class="member-detail" hidden>
+            Operating in stealth mode for now. Full bio coming soon.
+          </div>
         </div>
       </div>
       <div class="member reveal" role="button" tabindex="0" data-photo="assets/team-mariia.jpg">
-        <h3 class="member-name">Mariia Sokolova</h3>
-        <p class="member-role">Working Student · Communication, Marketing &amp; BD</p>
-        <p class="member-bio">
-          Kultur &amp; Technik, TU Berlin · Psycholinguistics Summer School,
-          Utrecht · Science Communication &amp; Content Strategy
-        </p>
-        <span class="member-more">View Profile →</span>
-        <div class="member-detail" hidden>
-          Working student supporting communications, marketing, and business development as LUXONNIC builds its public identity from the ground up. Studies Kultur und Technik (Culture and Technology) at TU Berlin, focusing on science communication, media structures, and translating complex research for non-specialist audiences. Brings experience as a tutor and educational program organizer, with hands-on skills in LinkedIn strategy, content creation, and visual design for pitch decks and presentations. Completed a Summer School in Psycholinguistics at Utrecht University and holds a strong interest in AI infrastructure and B2B markets. Fluent in German, English, Ukrainian, and Russian — and currently teaching herself Korean, purely out of curiosity.
+        <div class="member-photo"><img src="assets/team-mariia.jpg" alt="" loading="lazy" /></div>
+        <div class="member-body">
+          <h3 class="member-name">Mariia Sokolova</h3>
+          <p class="member-role">Working Student · Communication, Marketing &amp; BD</p>
+          <p class="member-bio">
+            Kultur &amp; Technik, TU Berlin · Psycholinguistics Summer School,
+            Utrecht · Science Communication &amp; Content Strategy
+          </p>
+          <span class="member-more">View Profile →</span>
+          <div class="member-detail" hidden>
+            Working student supporting communications, marketing, and business development as LUXONNIC builds its public identity from the ground up. Studies Kultur und Technik (Culture and Technology) at TU Berlin, focusing on science communication, media structures, and translating complex research for non-specialist audiences. Brings experience as a tutor and educational program organizer, with hands-on skills in LinkedIn strategy, content creation, and visual design for pitch decks and presentations. Completed a Summer School in Psycholinguistics at Utrecht University and holds a strong interest in AI infrastructure and B2B markets. Fluent in German, English, Ukrainian, and Russian — and currently teaching herself Korean, purely out of curiosity.
+          </div>
         </div>
       </div>
       <div class="member reveal" role="button" tabindex="0">
-        <h3 class="member-name">Shuhan Miao</h3>
-        <p class="member-role">
-          Working Student · Photonic Devices &amp; Optical Communications
-          Engineering
-        </p>
-        <p class="member-bio">
-          B.Sc. EE cand., TU Berlin · Silicon Photonics Thesis · Hackathon
-          Champion (Nokia, TRMNL, Huawei)
-        </p>
-        <span class="member-more">View Profile →</span>
-        <div class="member-detail" hidden>
-          Electrical Engineering student at TU Berlin, specializing in microelectronics and information systems, with a thesis on multi-mode interference couplers for ultra-low-loss silicon nitride photonic integrated circuits — directly in LUXONNIC's wheelhouse. Previously a Working Student Fullstack Engineer at Native Research GmbH, building AI orchestration and RAG retrieval pipelines, and has shipped flight software for the Innocube satellite as part of the SIERRA project. A serial hackathon winner: 1st place at the AI × TRMNL Hackathon, top 5% among 800+ participants at the Nokia FPGA Hackathon in Krakow, and a top-10 finish at Huawei's Tech Arena in Stockholm. Outside the lab, hosts music events at TU Berlin and has been teaching himself new tools out of curiosity since he built his first 3D models as a teenager chasing a ball-rolling video game.
+        <div class="member-photo member-photo--pending" aria-hidden="true"></div>
+        <div class="member-body">
+          <h3 class="member-name">Shuhan Miao</h3>
+          <p class="member-role">
+            Working Student · Photonic Devices &amp; Optical Communications
+            Engineering
+          </p>
+          <p class="member-bio">
+            B.Sc. EE cand., TU Berlin · Silicon Photonics Thesis · Hackathon
+            Champion (Nokia, TRMNL, Huawei)
+          </p>
+          <span class="member-more">View Profile →</span>
+          <div class="member-detail" hidden>
+            Electrical Engineering student at TU Berlin, specializing in microelectronics and information systems, with a thesis on multi-mode interference couplers for ultra-low-loss silicon nitride photonic integrated circuits — directly in LUXONNIC's wheelhouse. Previously a Working Student Fullstack Engineer at Native Research GmbH, building AI orchestration and RAG retrieval pipelines, and has shipped flight software for the Innocube satellite as part of the SIERRA project. A serial hackathon winner: 1st place at the AI × TRMNL Hackathon, top 5% among 800+ participants at the Nokia FPGA Hackathon in Krakow, and a top-10 finish at Huawei's Tech Arena in Stockholm. Outside the lab, hosts music events at TU Berlin and has been teaching himself new tools out of curiosity since he built his first 3D models as a teenager chasing a ball-rolling video game.
+          </div>
         </div>
       </div>
     </div>
@@ -168,42 +196,51 @@
     </div>
     <div class="team-grid">
       <div class="member reveal" role="button" tabindex="0" data-photo="assets/team-robert.jpg">
-        <h3 class="member-name">Dr. Robert Elschner</h3>
-        <p class="member-role">Technical &amp; Scientific Advisor</p>
-        <p class="member-bio">
-          Dipl.-Ing. &amp; Dr.-Ing., TU Berlin · Fraunhofer HHI Since 2010 ·
-          High-Speed Coherent Optical Systems · Real-Time DSP
-          Implementation · OFC Technical Program Committee
-        </p>
-        <span class="member-more">View Profile →</span>
-        <div class="member-detail" hidden>
-          Senior Scientist at Fraunhofer HHI's Photonic Networks and Systems department, where he has been part of the scientific staff since 2010. His expertise spans the design and implementation of high-speed coherent fiber-optical systems, with a particular focus on digital signal processing and its real-time implementation — the domain LUXONNIC's photonic neural processor is built to transform. Holds Dipl.-Ing. and Dr.-Ing. degrees in electrical engineering from TU Berlin (2006, 2011), with a research stint at École Nationale Supérieure des Télécommunications, Paris. Member of the Technical Program Committee of the Optical Fiber Communication Conference (OFC).
+        <div class="member-photo"><img src="assets/team-robert.jpg" alt="" loading="lazy" /></div>
+        <div class="member-body">
+          <h3 class="member-name">Dr. Robert Elschner</h3>
+          <p class="member-role">Technical &amp; Scientific Advisor</p>
+          <p class="member-bio">
+            Dipl.-Ing. &amp; Dr.-Ing., TU Berlin · Fraunhofer HHI Since 2010 ·
+            High-Speed Coherent Optical Systems · Real-Time DSP
+            Implementation · OFC Technical Program Committee
+          </p>
+          <span class="member-more">View Profile →</span>
+          <div class="member-detail" hidden>
+            Senior Scientist at Fraunhofer HHI's Photonic Networks and Systems department, where he has been part of the scientific staff since 2010. His expertise spans the design and implementation of high-speed coherent fiber-optical systems, with a particular focus on digital signal processing and its real-time implementation — the domain LUXONNIC's photonic neural processor is built to transform. Holds Dipl.-Ing. and Dr.-Ing. degrees in electrical engineering from TU Berlin (2006, 2011), with a research stint at École Nationale Supérieure des Télécommunications, Paris. Member of the Technical Program Committee of the Optical Fiber Communication Conference (OFC).
+          </div>
         </div>
       </div>
       <div class="member reveal" role="button" tabindex="0" data-photo="assets/team-colja.jpg">
-        <h3 class="member-name">Dr. Colja Schubert</h3>
-        <p class="member-role">Strategic Scientific Advisor</p>
-        <p class="member-bio">
-          Dr. rer. nat., TU Berlin · Fraunhofer HHI Since 2000 · Head of
-          Submarine &amp; Core Systems Group · Deputy Department Head ·
-          German Physical Society Member
-        </p>
-        <span class="member-more">View Profile →</span>
-        <div class="member-detail" hidden>
-          One of Europe's most recognized faces in high-speed optical transmission. Dr. rer. nat. in physics from TU Berlin (2004), with 25+ years at Fraunhofer HHI where he heads the Submarine & Core Systems group and serves as Deputy Head of the Photonic Networks & Systems department. Author and co-author of over 450 peer-reviewed papers spanning coherent fiber-optic systems, THz wireless communications, and optical signal processing. Member of the German Physical Society (DPG).
+        <div class="member-photo"><img src="assets/team-colja.jpg" alt="" loading="lazy" /></div>
+        <div class="member-body">
+          <h3 class="member-name">Dr. Colja Schubert</h3>
+          <p class="member-role">Strategic Scientific Advisor</p>
+          <p class="member-bio">
+            Dr. rer. nat., TU Berlin · Fraunhofer HHI Since 2000 · Head of
+            Submarine &amp; Core Systems Group · Deputy Department Head ·
+            German Physical Society Member
+          </p>
+          <span class="member-more">View Profile →</span>
+          <div class="member-detail" hidden>
+            One of Europe's most recognized faces in high-speed optical transmission. Dr. rer. nat. in physics from TU Berlin (2004), with 25+ years at Fraunhofer HHI where he heads the Submarine & Core Systems group and serves as Deputy Head of the Photonic Networks & Systems department. Author and co-author of over 450 peer-reviewed papers spanning coherent fiber-optic systems, THz wireless communications, and optical signal processing. Member of the German Physical Society (DPG).
+          </div>
         </div>
       </div>
       <div class="member reveal" role="button" tabindex="0" data-photo="assets/team-ronald.jpg">
-        <h3 class="member-name">Prof. Dr. Ronald Freund, MBA</h3>
-        <p class="member-role">Strategic &amp; Industry Advisor</p>
-        <p class="member-bio">
-          Professor, TU Berlin · Dr.-Ing. &amp; MBA (RWTH Aachen) · Head of
-          Photonic Networks &amp; Systems, Fraunhofer HHI · Co-Founder
-          &amp; former CTO, VPI Systems
-        </p>
-        <span class="member-more">View Profile →</span>
-        <div class="member-detail" hidden>
-          Full professor for Photonic Communication Systems at TU Berlin and Head of the Photonic Networks and Systems department at Fraunhofer HHI, where he has been since 1995. In 1997, he co-founded VPI Systems Inc. (formerly Broadband Network Design GmbH) and served as CTO, leading the development of physical-layer design software for optical networks and driving research collaborations with Sprint, AT&T, and the European Union. VPI Systems grew into a globally recognized industry standard and was subsequently acquired by Keysight Technologies. Holds Dr.-Ing. and Dipl.-Ing. degrees in Electrical Engineering from TU Ilmenau and an MBA from RWTH Aachen.
+        <div class="member-photo"><img src="assets/team-ronald.jpg" alt="" loading="lazy" /></div>
+        <div class="member-body">
+          <h3 class="member-name">Prof. Dr. Ronald Freund, MBA</h3>
+          <p class="member-role">Strategic &amp; Industry Advisor</p>
+          <p class="member-bio">
+            Professor, TU Berlin · Dr.-Ing. &amp; MBA (RWTH Aachen) · Head of
+            Photonic Networks &amp; Systems, Fraunhofer HHI · Co-Founder
+            &amp; former CTO, VPI Systems
+          </p>
+          <span class="member-more">View Profile →</span>
+          <div class="member-detail" hidden>
+            Full professor for Photonic Communication Systems at TU Berlin and Head of the Photonic Networks and Systems department at Fraunhofer HHI, where he has been since 1995. In 1997, he co-founded VPI Systems Inc. (formerly Broadband Network Design GmbH) and served as CTO, leading the development of physical-layer design software for optical networks and driving research collaborations with Sprint, AT&T, and the European Union. VPI Systems grew into a globally recognized industry standard and was subsequently acquired by Keysight Technologies. Holds Dr.-Ing. and Dipl.-Ing. degrees in Electrical Engineering from TU Ilmenau and an MBA from RWTH Aachen.
+          </div>
         </div>
       </div>
     </div>
@@ -254,5 +291,6 @@
   <script src="assets/cursor.js"></script>
   <script src="assets/reveal.js"></script>
   <script src="assets/member-modal.js"></script>
+  <script src="assets/waves3d.js"></script>
 </body>
 </html>

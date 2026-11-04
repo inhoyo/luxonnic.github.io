@@ -19,6 +19,16 @@
     rel="stylesheet"
   />
 
+  <!-- Three.js for the 3D light fields (pinned version, jsDelivr only) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
@@ -27,7 +37,7 @@
       <img id="intro-logo" class="intro-logo" src="assets/luxonnic-logo-intro.png" alt="LUXONNIC" />
     </div>
     <p id="intro-tagline" class="intro-tagline">
-      Becoming the secret sauce of Next-Gen transceivers
+      We form intelligence with light.
     </p>
     <button id="intro-skip" type="button">Skip ↓</button>
   </div>
@@ -93,27 +103,11 @@
         bandwidth upgrade. The industry cannot keep building this way.
       </p>
     </div>
-    <div class="diagram-wrap reveal" style="--reveal-delay: 0.1s">
-      <svg class="diagram" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
-        <rect class="diagram-static draw-path" x="14" y="40" width="54" height="120" rx="4" />
-        <path class="diagram-static draw-path" d="M22 58h38M22 78h38M22 98h38M22 118h38M22 138h38" />
-        <text class="diagram-label" x="41" y="176" text-anchor="middle">RACK</text>
-
-        <path class="diagram-static draw-path" d="M68 100h40" />
-
-        <rect class="diagram-static draw-path" x="112" y="80" width="40" height="40" rx="3" />
-        <circle class="diagram-dot" cx="132" cy="100" r="3" />
-        <text class="diagram-label" x="132" y="136" text-anchor="middle">XCVR</text>
-
-        <path class="diagram-static draw-path" d="M152 100h38" />
-
-        <rect class="diagram-static draw-path" x="194" y="64" width="100" height="72" rx="3" />
-        <path class="diagram-static draw-path" d="M208 118l12-28 12 20 12-32 12 24 12-16 12 10" />
-        <text class="diagram-label" x="244" y="150" text-anchor="middle">DSP · 20W</text>
-
-        <path class="diagram-static draw-path" d="M298 92 L318 72" stroke-linecap="round" />
-        <path class="diagram-static draw-path" d="M304 72 L318 72 L318 86" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
+        <div class="chip-stage reveal" style="--reveal-delay: 0.1s">
+      <canvas class="lux-scene" data-scene="power" role="img" aria-label="Animated 3D render: a server rack feeds a transceiver whose DSP draws 20 watts, while power climbs with every generation"></canvas>
+      <span class="chip-label chip-label--rack">RACK</span>
+      <span class="chip-label chip-label--power">XCVR · DSP · 20W</span>
+      <span class="chip-label chip-label--wall">Power wall</span>
     </div>
   </section>
 
@@ -130,28 +124,11 @@
         DSP-grade performance at under 1 W.
       </p>
     </div>
-    <div class="diagram-wrap reveal" style="--reveal-delay: 0.1s">
-      <svg class="diagram" viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg">
-        <path id="signal-in" class="diagram-static draw-path" d="M10 100 L22 70 L34 130 L46 80 L58 120 L70 90 L82 110 L94 100" />
-        <text class="diagram-label" x="52" y="150" text-anchor="middle">DISTORTED IN</text>
-        <circle class="flow-dot" r="2.6">
-          <animateMotion dur="2.2s" repeatCount="indefinite" path="M10 100 L22 70 L34 130 L46 80 L58 120 L70 90 L82 110 L94 100" />
-        </circle>
-
-        <path class="diagram-static draw-path" d="M100 100h30" />
-
-        <rect class="diagram-static draw-path" x="136" y="62" width="94" height="76" rx="4" />
-        <path class="diagram-static draw-path" d="M148 100 C165 90 183 110 200 100 C210 95 218 100 218 100" />
-        <text class="diagram-label" x="183" y="150" text-anchor="middle">LUXONNICORE · &lt;1W</text>
-
-        <path class="diagram-static draw-path" d="M230 100h22" />
-
-        <path id="signal-out" class="diagram-static draw-path" d="M252 100 C262 82 272 82 282 100 C292 118 302 118 312 100 C317 91 322 91 327 100" />
-        <text class="diagram-label" x="289" y="150" text-anchor="middle">CLEAN OUT</text>
-        <circle class="flow-dot" r="2.6">
-          <animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite" path="M252 100 C262 82 272 82 282 100 C292 118 302 118 312 100 C317 91 322 91 327 100" />
-        </circle>
-      </svg>
+        <div class="chip-stage reveal" style="--reveal-delay: 0.1s">
+      <canvas class="lux-scene" data-scene="chip" role="img" aria-label="Animated 3D render of the photonic chip: distorted light goes in, clean light comes out"></canvas>
+      <span class="chip-label chip-label--in">Distorted in</span>
+      <span class="chip-label chip-label--out">Clean out</span>
+      <span class="chip-label chip-label--power">LUXONNICore · &lt;1 W</span>
     </div>
   </section>
 
@@ -348,5 +325,8 @@
   <script src="assets/metrics.js"></script>
   <script src="assets/reveal.js"></script>
   <script src="assets/intro.js"></script>
+  <script src="assets/waves3d.js"></script>
+  <script src="assets/lux3d.js"></script>
+  <script src="assets/power3d.js"></script>
 </body>
 </html>
