@@ -114,7 +114,7 @@ a {
   justify-content: center;
   gap: 1.75rem;
   overflow: hidden;
-  background: var(--void);
+  background: #000;
   transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
@@ -122,28 +122,26 @@ a {
   transform: translateY(-100%);
 }
 
-.intro-logo-stage {
-  position: relative;
-  width: clamp(240px, 60vw, 560px);
-  aspect-ratio: 5893 / 1034;
-  opacity: 0;
-  transform: scale(0.92);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.js #intro.intro-visible .intro-logo-stage {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.intro-logo {
+.intro-video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: contain;
+  background: #000;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+
+.js #intro.intro-visible .intro-video {
+  opacity: 1;
 }
 
 .intro-tagline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14%;
   font-family: "Space Grotesk", sans-serif;
   font-weight: 500;
   font-size: clamp(1.1rem, 2.9vw, 1.7rem);

@@ -14,6 +14,7 @@
   }
 
   var skip = document.getElementById("intro-skip");
+  var video = document.getElementById("intro-video");
   var timers = [];
 
   function exitIntro() {
@@ -37,6 +38,23 @@
   requestAnimationFrame(function () {
     intro.classList.add("intro-visible");
   });
-  timers.push(setTimeout(function () { intro.classList.add("intro-step-2"); }, 900));
-  timers.push(setTimeout(exitIntro, 3000));
+
+  // The reveal video plays once; the tagline follows its last frame, then the intro lifts away.
+  if (video) {
+    video.addEventListener("ended", function () {
+      intro.classList.add("intro-step-2");
+      timers.push(setTimeout(exitIntro, 1600));
+    });
+    var playing = video.play();
+    if (playing && playing.catch) {
+      // autoplay blocked or file missing: keep the poster frame briefly, then go on
+      playing.catch(function () {
+        timers.push(setTimeout(exitIntro, 2500));
+      });
+    }
+  } else {
+    timers.push(setTimeout(exitIntro, 2500));
+  }
+  // safety net in case 'ended' never fires
+  timers.push(setTimeout(exitIntro, 9000));
 })();
