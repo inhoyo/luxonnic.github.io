@@ -363,55 +363,40 @@ a {
   opacity: 0.8;
 }
 
-/* ==== Metric instruments ==== */
+/* ==== LUXONNICore reel (video scrubbed by scroll) ==== */
 
-.metrics {
+.reel {
+  position: relative;
+  padding: 4rem 0 5rem;
   background: transparent;
-  padding: 5.5rem 2.5rem;
 }
 
-.metrics-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-
-.metric-panel {
-  border: 1px solid rgba(var(--iris-rgb), 0.6);
-  padding: 2rem 1.5rem;
+.reel-stick {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.9rem;
+  justify-content: center;
+  padding: 0 2.5rem;
 }
 
-.metric-readout {
-  display: flex;
-  align-items: baseline;
-  gap: 0.3rem;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 48px;
-  font-weight: 600;
-  color: var(--photon);
-  line-height: 1;
-}
-
-.metric-unit {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--ghost);
-}
-
-.metric-label {
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ghost);
+/* The render has a baked-in studio backdrop. "screen" lets the dark part
+   disappear into the page, and the feathered mask fades the rest out. */
+.reel-video {
+  display: block;
+  width: min(1200px, 100%);
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: transparent;
+  /* contrast pushes the dark backdrop to black and keeps the bright parts */
+  filter: contrast(1.6) brightness(0.9);
+  mix-blend-mode: screen;
+  /* all four edges fade to nothing, so no rectangle is visible */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 14%, #000 86%, transparent),
+    linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, #000 14%, #000 86%, transparent),
+    linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  mask-composite: intersect;
 }
 
 /* ==== Problem / Solution (text + schematic) ==== */
@@ -1101,16 +1086,6 @@ body.modal-open {
   transform: none;
 }
 
-.metric-panel:nth-child(1) {
-  --reveal-delay: 0s;
-}
-.metric-panel:nth-child(2) {
-  --reveal-delay: 0.08s;
-}
-.metric-panel:nth-child(3) {
-  --reveal-delay: 0.16s;
-}
-
 .member:nth-child(1) {
   --reveal-delay: 0s;
 }
@@ -1176,17 +1151,12 @@ body.modal-open {
     padding: 5.5rem 1.25rem 4rem;
   }
 
-  .metrics {
-    padding: 4rem 1.25rem;
+  .reel {
+    padding: 2.5rem 0 3rem;
   }
 
-  .metrics-inner {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-
-  .metric-readout {
-    font-size: 40px;
+  .reel-stick {
+    padding: 0 1.25rem;
   }
 
   .edge,

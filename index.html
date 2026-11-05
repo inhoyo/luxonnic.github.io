@@ -72,25 +72,19 @@
     <a class="hero-news-cue" href="#news">News ↓</a>
   </section>
 
-  <section class="metrics">
-    <div class="metrics-inner">
-      <div class="metric-panel reveal" data-target="10">
-        <div class="metric-readout"><span class="metric-value">0</span></div>
-        <span class="metric-unit">×</span>
-        <span class="metric-label">Efficiency Gain</span>
-      </div>
-      <div class="metric-panel reveal" data-target="1">
-        <div class="metric-readout">
-          &lt;<span class="metric-value">0</span>
-        </div>
-        <span class="metric-unit">W</span>
-        <span class="metric-label">Power per Module</span>
-      </div>
-      <div class="metric-panel reveal" data-target="100">
-        <div class="metric-readout"><span class="metric-value">0</span></div>
-        <span class="metric-unit">GBd</span>
-        <span class="metric-label">Symbol Rate</span>
-      </div>
+  <section class="reel" id="reel">
+    <div class="reel-stick">
+      <video
+        class="reel-video"
+        src="assets/luxonnicore-zoom.mp4"
+        poster="assets/luxonnicore-zoom-poster.jpg"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+        aria-label="Zoom into a transceiver as LUXONNICore is inserted in place of its DSP"
+      ></video>
     </div>
   </section>
 
@@ -324,8 +318,8 @@
 
   <script src="assets/background.js"></script>
   <script src="assets/cursor.js"></script>
-  <script src="assets/metrics.js"></script>
   <script src="assets/reveal.js"></script>
+  <script src="assets/reel.js"></script>
   <script src="assets/intro.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@5.0.1/bundled/locomotive-scroll.min.js"></script>
   <script src="assets/scroll.js"></script>
