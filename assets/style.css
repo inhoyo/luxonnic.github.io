@@ -1258,38 +1258,23 @@ body.modal-open {
   }
 }
 
-/* ==== Story video (transparent, scrubbed by scroll) ==== */
+/* ==== Story video (plays once at half speed) ==== */
 
 .story {
   position: relative;
+  padding: 4rem 0 5rem;
   background: transparent;
 }
 
-/* Tall track: the sticky stage stays on screen while the video plays through */
-.story-track {
-  height: 300vh;
-}
-
-.story-stick {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  height: 100svh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 2.5rem;
-  overflow: hidden;
-}
-
+/* The render fills the whole frame, so all four edges fade into the page */
 .story-video {
   display: block;
   width: min(1200px, 100%);
   height: auto;
   aspect-ratio: 16 / 9;
+  margin: 0 auto;
   background: transparent;
   pointer-events: none;
-  /* the render fills the whole frame, so all four edges fade into the page */
   -webkit-mask-image:
     linear-gradient(to right, transparent, #000 14%, #000 86%, transparent),
     linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
@@ -1301,7 +1286,7 @@ body.modal-open {
 }
 
 @media (max-width: 768px) {
-  .story-stick {
-    padding: 0 1.25rem;
+  .story {
+    padding: 2.5rem 0 3rem;
   }
 }
