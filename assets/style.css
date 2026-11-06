@@ -1258,44 +1258,179 @@ body.modal-open {
   }
 }
 
-/* ==== Story video (plays once at half speed) ==== */
+/* ==== Chapters: one pinned stage, four short captions ==== */
 
-.story {
+.chapters {
   position: relative;
-  padding: 4rem 0 5rem;
-  background: transparent;
+  /* four chapters, roughly one screen of scrolling each */
+  height: 480vh;
 }
 
-/* The render fills the whole frame, so all four edges fade into the page */
-.story-video {
-  display: block;
-  width: min(1200px, 100%);
-  height: auto;
+.chapters-stick {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.75rem, 2.5vh, 1.75rem);
+  padding: 4.5rem 2.5rem 2rem;
+  overflow: hidden;
+}
+
+.chapters-stage {
+  position: relative;
+  width: min(1100px, 100%, calc((100svh - 17rem) * 16 / 9));
   aspect-ratio: 16 / 9;
-  margin: 0 auto;
-  background: transparent;
+  flex: none;
+}
+
+/* The renders fill the whole frame, so all four edges fade into the page */
+.ch-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.7s ease;
   pointer-events: none;
   -webkit-mask-image:
-    linear-gradient(to right, transparent, #000 14%, #000 86%, transparent),
-    linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+    linear-gradient(to right, transparent, #000 12%, #000 88%, transparent),
+    linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
   -webkit-mask-composite: source-in;
   mask-image:
-    linear-gradient(to right, transparent, #000 14%, #000 86%, transparent),
-    linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+    linear-gradient(to right, transparent, #000 12%, #000 88%, transparent),
+    linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
   mask-composite: intersect;
 }
 
-/* the chip story follows the hall video directly */
-.story--chip {
-  padding-top: 0;
+.ch-video.is-on {
+  opacity: 1;
+}
+
+.chapters-copy {
+  position: relative;
+  width: min(760px, 100%);
+  min-height: 9.5rem;
+  flex: none;
+  text-align: center;
+}
+
+.ch-copy {
+  position: absolute;
+  inset: 0 0 auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+  pointer-events: none;
+}
+
+.ch-copy.is-active {
+  opacity: 1;
+  transform: none;
+}
+
+.ch-copy .eyebrow-mono {
+  margin-bottom: 0.9rem;
+}
+
+.ch-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3.6vw, 2.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.ch-line {
+  margin-top: 0.9rem;
+  font-family: "Inter", sans-serif;
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  line-height: 1.6;
+  color: var(--ink);
+  opacity: 0.75;
+}
+
+.ch-dots {
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ch-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink);
+  opacity: 0.25;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.ch-dot.is-active {
+  opacity: 1;
+  transform: scale(1.5);
 }
 
 @media (max-width: 768px) {
-  .story {
-    padding: 2.5rem 0 3rem;
+  .chapters {
+    height: 440vh;
   }
 
-  .story--chip {
-    padding-top: 0;
+  .chapters-stick {
+    padding: 4rem 1.25rem 1.5rem;
+    justify-content: flex-start;
+    padding-top: 22vh;
+  }
+
+  .chapters-stage {
+    width: 100%;
+  }
+
+  .ch-dots {
+    right: 0.6rem;
+  }
+}
+
+/* Reduced motion: no pinning, no autoplay; every caption is simply listed */
+@media (prefers-reduced-motion: reduce) {
+  .chapters {
+    height: auto;
+  }
+
+  .chapters-stick {
+    position: static;
+    height: auto;
+    padding: 6rem 1.5rem 3rem;
+  }
+
+  .chapters-copy {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .ch-copy {
+    position: static;
+    opacity: 1;
+    transform: none;
+  }
+
+  .ch-dots {
+    display: none;
   }
 }

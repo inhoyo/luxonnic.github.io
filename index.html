@@ -64,59 +64,67 @@
         We form intelligence<br />with <span class="gradient-word">light</span>.
       </h1>
       <p class="subhead reveal" style="--reveal-delay: 0.08s">
-        LUXONNIC replaces power-hungry DSPs inside AI-factory transceivers
-        with a trainable photonic chip. Signal equalization at the speed of
-        light, at under 1 W.
+        A trainable photonic chip replaces the power-hungry DSP in
+        AI-factory transceivers — at under 1&nbsp;W.
       </p>
     </div>
     <div class="scroll-cue" aria-hidden="true"></div>
     <a class="hero-news-cue" href="#news">News ↓</a>
   </section>
 
-  <section class="reel" id="reel">
-    <div class="reel-stick">
-      <video
-        class="reel-video"
-        src="assets/luxonnicore-zoom.mp4"
-        poster="assets/luxonnicore-zoom-poster.jpg"
-        autoplay
-        loop
-        muted
-        playsinline
-        preload="auto"
-        aria-label="Zoom into a transceiver as LUXONNICore is inserted in place of its DSP"
-      ></video>
+  <section class="chapters" id="chapters" aria-label="From datacenter to transceiver: DSP versus LUXONNIC">
+    <div class="chapters-stick">
+      <div class="chapters-stage">
+        <video
+          class="ch-video ch-video--hall is-on"
+          muted
+          playsinline
+          preload="auto"
+          poster="assets/datacenter-story-poster.png"
+          aria-label="An AI datacenter hall, zooming from rack to transceiver"
+        >
+          <source src="assets/datacenter-story.webm" type="video/webm" />
+        </video>
+        <video
+          class="ch-video ch-video--chip"
+          muted
+          playsinline
+          preload="metadata"
+          poster="assets/chip-story-poster.jpg"
+          aria-label="Inside a transceiver: a DSP cleans a distorted signal and burns power; without it the signal stays distorted; LUXONNIC's photonic chip cleans it at low power"
+        >
+          <source src="assets/chip-story.webm" type="video/webm" />
+          <source src="assets/chip-story.mp4" type="video/mp4" />
+        </video>
+      </div>
+
+      <div class="chapters-copy">
+        <article class="ch-copy is-active">
+          <span class="eyebrow-mono">01 · The link</span>
+          <h2 class="ch-title">Every AI factory runs on light.</h2>
+          <p class="ch-line">Thousands of GPUs, wired together by optical transceivers.</p>
+        </article>
+        <article class="ch-copy">
+          <span class="eyebrow-mono">02 · The DSP</span>
+          <h2 class="ch-title">Inside, a DSP cleans the signal.</h2>
+          <p class="ch-line">It works, but it burns the power budget.</p>
+        </article>
+        <article class="ch-copy">
+          <span class="eyebrow-mono">03 · Without it</span>
+          <h2 class="ch-title">Take it out, and the signal stays distorted.</h2>
+          <p class="ch-line">Fast links need equalization. Something has to do it.</p>
+        </article>
+        <article class="ch-copy">
+          <span class="eyebrow-mono">04 · LUXONNIC</span>
+          <h2 class="ch-title">A photonic chip cleans it in light.</h2>
+          <p class="ch-line">The same clean signal, at under 1&nbsp;W.</p>
+        </article>
+      </div>
+
+      <ol class="ch-dots" aria-hidden="true">
+        <li class="ch-dot is-active"></li><li class="ch-dot"></li><li class="ch-dot"></li><li class="ch-dot"></li>
+      </ol>
     </div>
-  </section>
-
-  <section class="story" id="story" aria-label="LUXONNIC in the AI datacenter">
-    <video
-      class="story-video"
-      muted
-      playsinline
-      autoplay
-      preload="auto"
-      poster="assets/datacenter-story-poster.png"
-      aria-label="The AI datacenter, from rack to transceiver to photonic chip"
-    >
-      <source src="assets/datacenter-story.webm" type="video/webm" />
-    </video>
-  </section>
-
-  <section class="story story--chip" id="story-chip" aria-label="Inside the transceiver: DSP versus LUXONNIC">
-    <video
-      class="story-video"
-      data-rate="1"
-      muted
-      playsinline
-      autoplay
-      preload="auto"
-      poster="assets/chip-story-poster.jpg"
-      aria-label="A distorted eye diagram is cleaned by a hot, power-hungry DSP; the DSP is removed and the signal stays distorted; LUXONNIC's photonic chip then cleans it at low power"
-    >
-      <source src="assets/chip-story.webm" type="video/webm" />
-      <source src="assets/chip-story.mp4" type="video/mp4" />
-    </video>
   </section>
 
   <section class="split-section">
@@ -126,10 +134,8 @@
         AI factories are hitting a power wall.
       </h2>
       <p class="section-body reveal" style="--reveal-delay: 0.16s">
-        Every GPU cluster in an AI factory is connected by optical
-        transceivers. Those transceivers already consume up to 40 MW per
-        facility — and the DSPs inside them scale their hunger with every
-        bandwidth upgrade. The industry cannot keep building this way.
+        Transceivers already draw up to 40 MW per facility, and their DSPs
+        get hungrier with every bandwidth step.
       </p>
     </div>
         <div class="chip-stage reveal" data-station="power" style="--reveal-delay: 0.1s">
@@ -146,10 +152,9 @@
         A neural network built from light itself.
       </h2>
       <p class="section-body reveal" style="--reveal-delay: 0.16s">
-        Our photonic integrated circuit performs signal equalization in the
-        optical domain — no analog-to-digital conversion, no digital
-        computation. Trained in-situ, reconfigurable, and WDM-native.
-        DSP-grade performance at under 1 W.
+        Equalization in the optical domain: no ADC, no digital compute.
+        Trained in-situ, reconfigurable, WDM-native — DSP-grade at under
+        1&nbsp;W.
       </p>
     </div>
         <div class="chip-stage reveal" data-station="signal" style="--reveal-delay: 0.1s">
@@ -182,20 +187,14 @@
           Program
         </p>
         <p class="news-body">
-          LUXONNIC has been selected for Batch 20 of
+          Selected for Batch 20 of
           <a
             href="https://www.ahead.fraunhofer.de/en.html"
             target="_blank"
             rel="noopener noreferrer"
             >Fraunhofer AHEAD</a
-          >, the Fraunhofer-Gesellschaft's deep-tech technology transfer
-          program connecting spin-offs across its 76 institutes to funding,
-          mentors, and industry networks. After a four-day Bootcamp
-          readiness gate, we're moving into Phase 1 — up to six months with
-          €50,000 in standardized funding to validate the customer problem,
-          scope our IP, and strengthen the founding team — backed by
-          hands-on coaching, access to Fraunhofer labs, and a curated
-          network of deep-tech and B2B experts along the way.
+          >. Phase 1 brings up to six months, €50,000 in funding, coaching
+          and access to Fraunhofer labs.
         </p>
       </div>
     </div>
@@ -211,14 +210,8 @@
           Development
         </p>
         <p class="news-body">
-          We're excited to welcome Mariia Sokolova to LUXONNIC as our new
-          Working Student in Communication, Marketing &amp; Business
-          Development. Mariia studies Kultur und Technik at TU Berlin and
-          brings a sharp eye for science communication, content, and design
-          to how we tell our story — from LinkedIn to pitch decks and
-          everything in between. Bonus round: she's teaching herself Korean
-          in her spare time, which has made a certain person on our
-          founding team (hi, In-Ho) unreasonably delighted. 안녕하세요, Mariia!
+          Mariia Sokolova joins us as Working Student in Communication,
+          Marketing &amp; Business Development. 안녕하세요, Mariia!
         </p>
       </div>
     </div>
@@ -236,19 +229,14 @@
           Berlin
         </p>
         <p class="news-body">
-          LUXONNIC has been accepted into the
+          Accepted into the
           <a
             href="https://www.creativedestructionlab.com/"
             target="_blank"
             rel="noopener noreferrer"
             >Creative Destruction Lab</a
-          >'s Next Gen Computing stream for the 2026/27 program year — a
-          nine-month, equity-free venture program run jointly by CDL-Berlin
-          and CDL-Paris in partnership with HEC Paris and ESMT Berlin, and in
-          cooperation with TUM Campus Heilbronn and Campus Founders. We'll be
-          working alongside mentors spanning advanced computing,
-          semiconductors, and photonics as we scale the photonic neural
-          processor toward deployment.
+          >'s Next Gen Computing stream for 2026/27 — a nine-month,
+          equity-free venture program.
         </p>
       </div>
     </div>
@@ -265,15 +253,14 @@
           bcc Berlin Congress Center, Berlin · Sept 8–10, 2026
         </p>
         <p class="news-body">
-          We're heading to the
+          Heading to the
           <a
             href="https://www.berlin-6g-conference.de/"
             target="_blank"
             rel="noopener noreferrer"
             >Berlin 6G Conference</a
           >
-          next week. If you're around, reach out — we'd love to meet up and
-          talk photonics, 6G, and everything in between.
+          next week. Reach out — let's talk photonics and 6G.
         </p>
       </div>
     </div>
@@ -288,9 +275,8 @@
           Lanolin Fabrik, Berlin · Hosted by Silicon Allee × Fraunhofer HHI
         </p>
         <p class="news-body">
-          Luxonnic took first place pitching to investors and researchers at
-          Deep Tech Night: Quantum &amp; Photonics. Thank you to Silicon
-          Allee and Fraunhofer HHI for hosting, and to everyone who came out.
+          First place at Deep Tech Night: Quantum &amp; Photonics. Thanks to
+          Silicon Allee and Fraunhofer HHI for hosting.
         </p>
       </div>
     </div>
@@ -306,9 +292,8 @@
           Fraunhofer HHI
         </p>
         <p class="news-body">
-          Five photonics and quantum startups pitching to investors,
-          researchers, and founders, alongside a look at the Silicon Allee
-          venture lab at Fraunhofer HHI. Come say hi.
+          Five photonics and quantum startups pitch to investors and
+          researchers. Come say hi.
         </p>
       </div>
     </div>
@@ -350,11 +335,10 @@
   <script src="assets/background.js"></script>
   <script src="assets/cursor.js"></script>
   <script src="assets/reveal.js"></script>
-  <script src="assets/reel.js"></script>
   <script src="assets/intro.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@5.0.1/bundled/locomotive-scroll.min.js"></script>
   <script src="assets/scroll.js"></script>
-  <script src="assets/story-play.js"></script>
+  <script src="assets/chapters.js"></script>
   <script src="assets/stations-models.js"></script>
   <script src="assets/world3d.js"></script>
 </body>
