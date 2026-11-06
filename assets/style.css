@@ -361,32 +361,40 @@ a {
   opacity: 0.8;
 }
 
-/* ==== LUXONNICore reel (video scrubbed by scroll) ==== */
+/* ==== LUXONNICore reel: pinned stage, video scrubbed by scroll ==== */
 
 .reel {
   position: relative;
-  padding: 4rem 0 5rem;
-  background: transparent;
+  height: 340vh;
 }
 
 .reel-stick {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  padding: 0 2.5rem;
+  gap: clamp(0.75rem, 2.5vh, 1.75rem);
+  padding: 4.5rem 2.5rem 2rem;
+  overflow: hidden;
 }
 
 /* The render has a baked-in studio backdrop. "screen" lets the dark part
    disappear into the page, and the feathered mask fades the rest out. */
 .reel-video {
-  display: block;
-  width: min(1200px, 100%);
-  height: auto;
-  aspect-ratio: 16 / 9;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   background: transparent;
+  pointer-events: none;
   /* contrast pushes the dark backdrop to black and keeps the bright parts */
   filter: contrast(1.6) brightness(0.9);
   mix-blend-mode: screen;
-  /* all four edges fade to nothing, so no rectangle is visible */
   -webkit-mask-image:
     linear-gradient(to right, transparent, #000 14%, #000 86%, transparent),
     linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
@@ -1149,12 +1157,8 @@ body.modal-open {
     padding: 5.5rem 1.25rem 4rem;
   }
 
-  .reel {
-    padding: 2.5rem 0 3rem;
-  }
-
   .reel-stick {
-    padding: 0 1.25rem;
+    padding: 4rem 1.25rem 1.5rem;
   }
 
   .edge,
@@ -1432,5 +1436,23 @@ body.modal-open {
 
   .ch-dots {
     display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .reel {
+    height: 300vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel {
+    height: auto;
+  }
+
+  .reel-stick {
+    position: static;
+    height: auto;
+    padding: 6rem 1.5rem 3rem;
   }
 }
