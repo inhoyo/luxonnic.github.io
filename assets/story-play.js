@@ -1,29 +1,32 @@
 /*
- * story-play.js — plays the story video once at half speed, when it scrolls
- * into view. Reduced-motion visitors keep the poster frame instead.
+ * story-play.js — plays each story video once when it scrolls into view.
+ * data-rate sets the playback speed (default 0.5, i.e. half speed).
+ * Reduced-motion visitors keep the poster frame instead.
  */
 (function () {
-  var video = document.querySelector(".story-video");
-  if (!video) return;
+  var videos = document.querySelectorAll(".story-video");
+  if (!videos.length) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    video.removeAttribute("autoplay");
+    videos.forEach(function (v) { v.removeAttribute("autoplay"); });
     return;
   }
 
-  video.playbackRate = 0.5;
+  videos.forEach(function (v) {
+    v.playbackRate = parseFloat(v.getAttribute("data-rate") || "0.5");
+  });
 
   if (!("IntersectionObserver" in window)) {
-    video.play().catch(function () {});
+    videos.forEach(function (v) { v.play().catch(function () {}); });
     return;
   }
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
-        video.play().catch(function () {});
+        entry.target.play().catch(function () {});
       } else {
-        video.pause();
+        entry.target.pause();
       }
     });
   }, { threshold: 0.4 });
-  observer.observe(video);
+  videos.forEach(function (v) { observer.observe(v); });
 })();

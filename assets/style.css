@@ -1285,8 +1285,17 @@ body.modal-open {
   mask-composite: intersect;
 }
 
+/* the chip story follows the hall video directly */
+.story--chip {
+  padding-top: 0;
+}
+
 @media (max-width: 768px) {
   .story {
     padding: 2.5rem 0 3rem;
+  }
+
+  .story--chip {
+    padding-top: 0;
   }
 }
