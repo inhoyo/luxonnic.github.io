@@ -361,25 +361,24 @@ a {
   opacity: 0.8;
 }
 
-/* ==== LUXONNICore reel: pinned stage, video scrubbed by scroll ==== */
+/* ==== LUXONNICore reel: plays once when it comes into view ==== */
 
 .reel {
   position: relative;
-  height: 340vh;
+  padding: 5rem 2.5rem 6rem;
 }
 
 .reel-stick {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: clamp(0.75rem, 2.5vh, 1.75rem);
-  padding: 4.5rem 2.5rem 2rem;
-  overflow: hidden;
+}
+
+.reel-stage {
+  position: relative;
+  width: min(1100px, 100%);
+  aspect-ratio: 16 / 9;
 }
 
 /* The render has a baked-in studio backdrop. "screen" lets the dark part
@@ -403,6 +402,10 @@ a {
     linear-gradient(to right, transparent, #000 14%, #000 86%, transparent),
     linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
   mask-composite: intersect;
+}
+
+.reel-copy {
+  min-height: 8rem;
 }
 
 /* ==== Problem / Solution (text + schematic) ==== */
@@ -1157,8 +1160,8 @@ body.modal-open {
     padding: 5.5rem 1.25rem 4rem;
   }
 
-  .reel-stick {
-    padding: 4rem 1.25rem 1.5rem;
+  .reel {
+    padding: 3rem 1.25rem 4rem;
   }
 
   .edge,
@@ -1439,20 +1442,18 @@ body.modal-open {
   }
 }
 
-@media (max-width: 768px) {
-  .reel {
-    height: 300vh;
-  }
-}
-
+/* Reduced motion: no autoplay; both captions are simply listed */
 @media (prefers-reduced-motion: reduce) {
-  .reel {
-    height: auto;
+  .reel-copy {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
   }
 
-  .reel-stick {
+  .reel .ch-copy {
     position: static;
-    height: auto;
-    padding: 6rem 1.5rem 3rem;
+    opacity: 1;
+    transform: none;
   }
 }
