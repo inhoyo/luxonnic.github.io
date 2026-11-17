@@ -34,8 +34,6 @@
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
-  <canvas id="world" aria-hidden="true"></canvas>
-  <div class="scroll-progress" aria-hidden="true"></div>
   <div id="intro" aria-hidden="true">
     <video id="intro-video" class="intro-video" muted playsinline preload="auto" poster="assets/luxonnic-logo-reveal-poster.jpg">
       <source src="assets/luxonnic-logo-reveal.webm" type="video/webm" />
@@ -52,147 +50,22 @@
       ><img class="wordmark-logo" src="assets/luxonnic_logo_curvedL_white.svg" alt="LUXONNIC"
     /></a>
     <div class="nav-right">
-      <a class="nav-link" href="technology.html">Technology</a>
+      <a class="nav-link" href="solution.html">Solution</a>
       <a class="nav-link" href="about.html">About</a>
     </div>
   </nav>
 
   <section id="hero">
     <div class="fiber-bg" aria-hidden="true"></div>
-    <div class="hero-content" data-scroll data-scroll-speed="-0.12">
+    <div class="hero-content">
       <h1 class="hero-title reveal">
-        We form intelligence<br />with <span class="gradient-word">light</span>.
+        AI factories are<br />hitting a power wall.
       </h1>
       <p class="subhead reveal" style="--reveal-delay: 0.08s">
-        A trainable photonic chip replaces the power-hungry DSP in
-        AI-factory transceivers, at under 1&nbsp;W.
+        LUXONNIC replaces the power-hungry DSP inside optical transceivers
+        with a photonic chip that runs at under 1&nbsp;W.
       </p>
-    </div>
-    <div class="scroll-cue" aria-hidden="true"></div>
-    <a class="hero-news-cue" href="#news">News ↓</a>
-  </section>
-
-  <section class="chapters" id="chapters" aria-label="From datacenter to transceiver: DSP versus LUXONNIC">
-    <div class="chapters-stick">
-      <div class="chapters-stage">
-        <video
-          class="ch-video ch-video--hall is-on"
-          muted
-          playsinline
-          preload="auto"
-          poster="assets/datacenter-story-poster.png"
-          aria-label="An AI datacenter hall, zooming from rack to transceiver"
-        >
-          <source src="assets/datacenter-story.webm" type="video/webm" />
-        </video>
-        <video
-          class="ch-video ch-video--chip"
-          muted
-          playsinline
-          preload="metadata"
-          poster="assets/chip-story-poster.jpg"
-          aria-label="Inside a transceiver: a DSP cleans a distorted signal and burns power; without it the signal stays distorted; LUXONNIC's photonic chip cleans it at low power"
-        >
-          <source src="assets/chip-story.webm" type="video/webm" />
-          <source src="assets/chip-story.mp4" type="video/mp4" />
-        </video>
-      </div>
-
-      <div class="chapters-copy">
-        <article class="ch-copy is-active">
-          <span class="eyebrow-mono">01 · The link</span>
-          <h2 class="ch-title">Every AI factory runs on light.</h2>
-          <p class="ch-line">Thousands of GPUs, wired together by optical transceivers.</p>
-        </article>
-        <article class="ch-copy">
-          <span class="eyebrow-mono">02 · The DSP</span>
-          <h2 class="ch-title">Inside, a DSP cleans the signal.</h2>
-          <p class="ch-line">It works, but it burns the power budget.</p>
-        </article>
-        <article class="ch-copy">
-          <span class="eyebrow-mono">03 · Without it</span>
-          <h2 class="ch-title">Take it out, and the signal stays distorted.</h2>
-          <p class="ch-line">Fast links need equalization. Something has to do it.</p>
-        </article>
-        <article class="ch-copy">
-          <span class="eyebrow-mono">04 · LUXONNIC</span>
-          <h2 class="ch-title">A photonic chip cleans it in light.</h2>
-          <p class="ch-line">The same clean signal, at under 1&nbsp;W.</p>
-        </article>
-      </div>
-
-      <ol class="ch-dots" aria-hidden="true">
-        <li class="ch-dot is-active"></li><li class="ch-dot"></li><li class="ch-dot"></li><li class="ch-dot"></li>
-      </ol>
-    </div>
-  </section>
-
-  <section class="split-section">
-    <div class="text-col" data-scroll data-scroll-speed="0.05">
-      <span class="eyebrow-mono reveal">WHY NOW</span>
-      <h2 class="display-h2 reveal" style="--reveal-delay: 0.08s">
-        AI factories are hitting a power wall.
-      </h2>
-      <p class="section-body reveal" style="--reveal-delay: 0.16s">
-        Transceivers already draw up to 40 MW per facility, and their DSPs
-        get hungrier with every bandwidth step.
-      </p>
-    </div>
-        <div class="chip-stage reveal" data-station="power" style="--reveal-delay: 0.1s">
-            <span class="chip-label chip-label--rack">RACK</span>
-      <span class="chip-label chip-label--power">XCVR · DSP · 20W</span>
-      <span class="chip-label chip-label--wall">Power wall</span>
-    </div>
-  </section>
-
-  <section class="split-section">
-    <div class="text-col" data-scroll data-scroll-speed="0.05">
-      <span class="eyebrow-mono reveal">HOW IT WORKS</span>
-      <h2 class="display-h2 reveal" style="--reveal-delay: 0.08s">
-        A neural network built from light itself.
-      </h2>
-      <p class="section-body reveal" style="--reveal-delay: 0.16s">
-        Equalization in the optical domain: no ADC, no digital compute.
-        Trained in situ, reconfigurable, WDM-native. DSP-grade at under
-        1&nbsp;W.
-      </p>
-    </div>
-        <div class="chip-stage reveal" data-station="signal" style="--reveal-delay: 0.1s">
-            <span class="chip-label chip-label--in">Distorted in</span>
-      <span class="chip-label chip-label--out">Clean out</span>
-      <span class="chip-label chip-label--power">LUXONNICore · &lt;1 W</span>
-    </div>
-  </section>
-
-  <section class="edge">
-    <h2 class="display-h2 reveal">Designed for where DSP is the bottleneck.</h2>
-  </section>
-
-  <section class="reel" id="reel" aria-label="LUXONNICore in place of the DSP">
-    <div class="reel-stick">
-      <div class="reel-stage">
-        <video
-          class="reel-video"
-          muted
-          playsinline
-          preload="metadata"
-          poster="assets/luxonnicore-zoom-poster.jpg"
-          aria-label="Zoom into a transceiver as LUXONNICore is inserted in place of its DSP"
-        >
-          <source src="assets/luxonnicore-zoom.mp4" type="video/mp4" />
-        </video>
-      </div>
-      <div class="chapters-copy reel-copy">
-        <article class="ch-copy is-active">
-          <span class="eyebrow-mono">LUXONNICore</span>
-          <h2 class="ch-title">Swap the DSP for a photonic chip.</h2>
-        </article>
-        <article class="ch-copy">
-          <span class="eyebrow-mono">The result</span>
-          <h2 class="ch-title">DSP-like performance at a fraction of the power.</h2>
-          <p class="ch-line">Under 1&nbsp;W.</p>
-        </article>
-      </div>
+      <a class="footer-cta-link reveal" style="--reveal-delay: 0.16s" href="solution.html">Explore our solution →</a>
     </div>
   </section>
 
@@ -379,12 +252,9 @@
   <script src="assets/cursor.js"></script>
   <script src="assets/reveal.js"></script>
   <script src="assets/intro.js"></script>
+  <script src="assets/waves3d.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@5.0.1/bundled/locomotive-scroll.min.js"></script>
   <script src="assets/scroll.js"></script>
-  <script src="assets/chapters.js"></script>
-  <script src="assets/reel.js"></script>
   <script src="assets/marquee.js"></script>
-  <script src="assets/stations-models.js"></script>
-  <script src="assets/world3d.js"></script>
 </body>
 </html>
