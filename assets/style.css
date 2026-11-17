@@ -361,6 +361,90 @@ a {
   opacity: 0.8;
 }
 
+/* ==== Supported by (moving logo banner) ==== */
+
+.supporters {
+  position: relative;
+  padding: 3rem 0 3.5rem;
+  background: transparent;
+  overflow: hidden;
+}
+
+.supporters-label {
+  text-align: center;
+  margin: 0 0 1.25rem;
+  font-size: 12px;
+  color: var(--photon);
+  opacity: 0.85;
+}
+
+/* monochrome grey logos running inside a thin band */
+.marquee {
+  overflow: hidden;
+  padding: 1.5rem 0;
+  border-top: 1px solid rgba(var(--iris-rgb), 0.5);
+  border-bottom: 1px solid rgba(var(--iris-rgb), 0.5);
+  background: rgba(255, 255, 255, 0.03);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-group {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0 0.625rem;
+  list-style: none;
+}
+
+.logo-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72px;
+  padding: 0 1.5rem;
+}
+
+.logo-tile img {
+  display: block;
+  width: auto;
+  opacity: 0.85;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-1 * var(--shift, 50%))); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 1rem;
+  }
+  .marquee-group {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .marquee-group[aria-hidden="true"] {
+    display: none;
+  }
+}
+
 /* ==== LUXONNICore reel: plays once when it comes into view ==== */
 
 .reel {
