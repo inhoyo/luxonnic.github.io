@@ -3,11 +3,11 @@
 <head>
   <script>document.documentElement.classList.add("js");</script>
   <meta charset="UTF-8" />
-  <title>The Technology — LUXONNIC</title>
+  <title>The Technology: LUXONNIC</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta
     name="description"
-    content="How LUXONNIC's photonic neural processor replaces DSPs inside AI-factory transceivers — the physics, architecture, and integration story."
+    content="How LUXONNIC's photonic neural processor replaces DSPs inside AI-factory transceivers. It covers the physics, architecture, and integration."
   />
   <link rel="icon" type="image/png" href="assets/luxonnic_icon.png" />
 
@@ -281,63 +281,63 @@
     </h1>
     <p class="tech-hero-sub reveal" style="--reveal-delay: 0.14s">
       A step-by-step account of why digital signal processing can't scale
-      with the AI boom — and what we built instead.
+      with the AI boom, and what we built instead.
     </p>
   </header>
 
   <!-- ── Chapter 01: Scroll scene ─────────────────────────── -->
-  <section id="scene-gpu" class="scene-wrapper" aria-label="Chapter 01 — The Bottleneck">
+  <section id="scene-gpu" class="scene-wrapper" aria-label="Chapter 01: The Bottleneck">
     <div class="scene-sticky">
       <canvas id="dc-canvas" aria-hidden="true"></canvas>
       <div class="scene-overlay-gradient" aria-hidden="true"></div>
 
       <!-- Panel 0: electrons -->
       <div class="scene-panel-text is-active" data-panel="0">
-        <span class="scene-panel-eyebrow">01 — The Bottleneck</span>
+        <span class="scene-panel-eyebrow">01 · The Bottleneck</span>
         <h2 class="scene-panel-heading">AI factories<br>compute with electrons.</h2>
-        <p class="scene-panel-body">GPUs crunch every matrix multiply electrically — electrons racing through silicon at up to 1,000 W per chip.</p>
+        <p class="scene-panel-body">GPUs crunch every matrix multiply electrically, with electrons racing through silicon at up to 1,000 W per chip.</p>
       </div>
 
       <!-- Panel 1: expansion -->
       <div class="scene-panel-text" data-panel="1">
-        <span class="scene-panel-eyebrow">01 — The Bottleneck</span>
+        <span class="scene-panel-eyebrow">01 · The Bottleneck</span>
         <h2 class="scene-panel-heading">Thousands of GPUs.<br>All linked.</h2>
-        <p class="scene-panel-body">A 100,000-GPU AI cluster is a dense network — every node must reach every other at hundreds of gigabits per second.</p>
+        <p class="scene-panel-body">A 100,000-GPU AI cluster is a dense network, where every node must reach every other at hundreds of gigabits per second.</p>
       </div>
 
       <!-- Panel 2: photon conversion -->
       <div class="scene-panel-text" data-panel="2">
-        <span class="scene-panel-eyebrow">01 — The Bottleneck</span>
+        <span class="scene-panel-eyebrow">01 · The Bottleneck</span>
         <h2 class="scene-panel-heading">Every link converts<br>electrons ↔ photons.</h2>
-        <p class="scene-panel-body">Fiber optics span the datacenter — but electrons must convert to photons to enter the fiber, then back to electrons at the far end.</p>
+        <p class="scene-panel-body">Fiber optics span the datacenter, but electrons must convert to photons to enter the fiber and back to electrons at the far end.</p>
       </div>
 
       <!-- Panel 3: distortion -->
       <div class="scene-panel-text" data-panel="3">
-        <span class="scene-panel-eyebrow">01 — The Bottleneck</span>
+        <span class="scene-panel-eyebrow">01 · The Bottleneck</span>
         <h2 class="scene-panel-heading">The fiber distorts<br>the light.</h2>
-        <p class="scene-panel-body">Chromatic dispersion stretches the optical pulse as it travels — different wavelengths arrive at different times. The signal is a mess.</p>
+        <p class="scene-panel-body">Chromatic dispersion stretches the optical pulse as it travels, so different wavelengths arrive at different times. The signal is a mess.</p>
       </div>
 
       <!-- Panel 4: DSP zoom -->
       <div class="scene-panel-text" data-panel="4">
-        <span class="scene-panel-eyebrow">01 — The Bottleneck</span>
+        <span class="scene-panel-eyebrow">01 · The Bottleneck</span>
         <h2 class="scene-panel-heading">The DSP has to<br>equalize all of this.</h2>
-        <p class="scene-panel-body">Every transceiver contains a DSP that reconstructs the signal from the optical chaos. That digital processing burns 20 W — per link.</p>
+        <p class="scene-panel-body">Every transceiver contains a DSP that reconstructs the signal from the optical chaos. That digital processing burns 20 W per link.</p>
       </div>
 
       <!-- Panel 5: the pivot question -->
       <div class="scene-panel-text" data-panel="5">
-        <span class="scene-panel-eyebrow">02 — The Idea</span>
+        <span class="scene-panel-eyebrow">02 · The Idea</span>
         <h2 class="scene-panel-heading">What if we didn&rsquo;t<br>clean this up with electrons?</h2>
-        <p class="scene-panel-body">Instead of converting the distorted light into electrons just to fix it, what if the correction happened directly in the optical domain — before the photons ever become electricity?</p>
+        <p class="scene-panel-body">Instead of converting the distorted light into electrons just to fix it, what if the correction happened directly in the optical domain, before the photons ever become electricity?</p>
       </div>
 
       <!-- Panel 6: the answer — LUXONNICore -->
       <div class="scene-panel-text" data-panel="6">
-        <span class="scene-panel-eyebrow">03 — The Answer</span>
+        <span class="scene-panel-eyebrow">03 · The Answer</span>
         <h2 class="scene-panel-heading">The LUXONNICore.<br>No electrons required.</h2>
-        <p class="scene-panel-body">It replaces the transceiver's DSP outright — taking the same distorted optical signal in, and putting a clean optical signal out, without ever converting to electricity. All at under 1 W.</p>
+        <p class="scene-panel-body">It replaces the transceiver's DSP outright. It takes the same distorted optical signal in and puts a clean optical signal out, without ever converting to electricity. All at under 1 W.</p>
       </div>
 
       <!-- Right-side progress dots -->

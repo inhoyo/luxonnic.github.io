@@ -941,7 +941,7 @@ body > footer {
 .team {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1rem 2.5rem 6rem;
+  padding: 0 2.5rem 1rem;
 }
 
 .team-header {
@@ -949,7 +949,7 @@ body > footer {
   align-items: baseline;
   justify-content: space-between;
   border-top: 1px solid var(--iris);
-  padding-top: 1.5rem;
+  padding-top: 0.75rem;
   margin-bottom: 2.5rem;
 }
 
@@ -1227,7 +1227,7 @@ body.modal-open {
   }
 
   .team {
-    padding: 1rem 1.75rem 4.5rem;
+    padding: 0 1.75rem 0.75rem;
   }
 }
 
@@ -1540,4 +1540,17 @@ body.modal-open {
     opacity: 1;
     transform: none;
   }
+}
+
+/* ==== Supporting team: hairline between the advisory board and the supporters ==== */
+.team-divider {
+  width: min(1200px, calc(100% - 5rem));
+  height: 0;
+  margin: 0.75rem auto 0;
+  border: 0;
+  border-top: 1px solid rgba(var(--iris-rgb), 0.35);
+}
+
+.supporting-team {
+  padding-top: 0;
 }
