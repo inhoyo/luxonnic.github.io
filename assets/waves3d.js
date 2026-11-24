@@ -128,10 +128,14 @@ function mount(container) {
   halo.scale.set(46, 26, 1);
   scene.add(halo);
 
+  // Calm field (fewer strands and pulses) on every page; data-density="full" opts a mount back into the denser version
+  const calm = container.dataset.density !== "full";
+  const strandCount = calm ? 16 : STRANDS;
+  const pulseEvery = calm ? 8 : 2;
   const strands = [];
   const pulses = [];
-  for (let i = 0; i < STRANDS; i++) {
-    const f = i / (STRANDS - 1);
+  for (let i = 0; i < strandCount; i++) {
+    const f = i / (strandCount - 1);
     const yb = (f - 0.5) * 11;
     const zb = -16 + ((i * 0.618034) % 1) * 20 + Math.sin(i * 1.7) * 1.2;
     const pts = [];
@@ -166,7 +170,7 @@ function mount(container) {
     strands.push({ mat, phase: i * 0.61, curve });
 
     // one or two photon pulses per strand; the freshest ones are brightest
-    if (i % 2 === 0) {
+    if (i % pulseEvery === 0) {
       const count = i % 4 === 0 ? 2 : 1;
       for (let k = 0; k < count; k++) {
         const s = new THREE.Sprite(
@@ -193,7 +197,7 @@ function mount(container) {
 
   const composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.85, 0.4, 0.55);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), calm ? 0.5 : 0.85, 0.4, 0.55);
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
 
