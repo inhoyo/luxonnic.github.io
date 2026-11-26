@@ -226,11 +226,11 @@
       left: 50%;
       transform: translateX(-50%);
       font-family: "JetBrains Mono", monospace;
-      font-size: 9px;
+      font-size: 11px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--ghost);
-      opacity: 0.55;
+      color: #a0a0b8;
+      opacity: 1;
       pointer-events: none;
       animation: hintBob 2.2s ease-in-out infinite;
       transition: opacity 0.4s ease;
@@ -241,8 +241,8 @@
     }
 
     @keyframes hintBob {
-      0%, 100% { opacity: 0.35; transform: translateX(-50%) translateY(0);   }
-      50%       { opacity: 0.65; transform: translateX(-50%) translateY(5px); }
+      0%, 100% { opacity: 0.85; transform: translateX(-50%) translateY(0);   }
+      50%       { opacity: 1; transform: translateX(-50%) translateY(5px); }
     }
 
     @media (max-width: 700px) {

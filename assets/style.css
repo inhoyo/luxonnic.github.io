@@ -8,7 +8,7 @@
   --ember-rgb: 255, 107, 53;
   --surface: #111118;
   --ink: #e8e8f0;
-  --ghost: #4a4a5e;
+  --ghost: #80809a;
 }
 
 * {
@@ -85,7 +85,7 @@ a {
 
 .nav-link {
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -166,7 +166,7 @@ a {
   bottom: 1.5rem;
   z-index: 1;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -302,7 +302,7 @@ a {
   bottom: 2.1rem;
   z-index: 1;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -630,7 +630,7 @@ body > footer {
 .chip-label {
   position: absolute;
   font-family: "JetBrains Mono", monospace;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ghost);
@@ -715,7 +715,7 @@ body > footer {
 }
 
 .news-date-month {
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   color: var(--photon);
@@ -988,7 +988,7 @@ body > footer {
   display: inline-block;
   margin-top: 1rem;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.66rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1011,7 +1011,7 @@ body > footer {
 .member-role {
   margin-top: 0.4rem;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1320,7 +1320,7 @@ body.modal-open {
 }
 
 .member-role {
-  font-size: 0.66rem;
+  font-size: 0.7rem;
   line-height: 1.6;
 }
 
